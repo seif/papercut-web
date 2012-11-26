@@ -1,5 +1,6 @@
 ﻿namespace Papercut.SmtpHost
 {
+    using System;
     using System.Configuration;
     using System.Net;
 
@@ -19,8 +20,9 @@
                     {
                         var address = IPAddress.Parse(ConfigurationManager.AppSettings["IP"]);
                         var port = int.Parse(ConfigurationManager.AppSettings["Port"]);
+                        var mailFolder = ConfigurationManager.AppSettings["MailFolder"];
 
-                        return new Server(address, port);
+                        return new Server(address, port, new Processor(mailFolder));
                     });
                 c.WhenStarted(s => s.Start());
                 c.WhenStopped(s => s.Stop());

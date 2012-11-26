@@ -148,7 +148,7 @@ namespace Papercut.UI
             var port = Settings.Default.Port;
 
             // Start listening for connections
-            this.server = new Server(address,port);
+            this.server = new Server(address, port, new Processor(AppDomain.CurrentDomain.BaseDirectory));
             try
             {
                 this.server.Start();

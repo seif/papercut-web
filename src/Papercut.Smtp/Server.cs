@@ -83,14 +83,17 @@ namespace Papercut.Smtp
 		/// </summary>
 		private Thread timeoutThread;
 
+	    private Processor processor;
+
 	    #endregion
 
 		#region Public Methods and Operators
 
-	    public Server(IPAddress address, int port)
+	    public Server(IPAddress address, int port, Processor processor)
 	    {
 	        this._address = address;
 	        this._port = port;
+	        this.processor = processor;
 	    }
 
 	    /// <summary>
@@ -204,7 +207,7 @@ namespace Papercut.Smtp
 			{
 				Socket clientSocket = this._listener.EndAccept(ar);
 				Interlocked.Increment(ref this.connectionID);
-				var connection = new Connection(this.connectionID, clientSocket, Processor.ProcessCommand);
+			    var connection = new Connection(this.connectionID, clientSocket, this.processor.ProcessCommand);
 				connection.ConnectionClosed += this.connection_ConnectionClosed;
 				this._connections.Add(connection.ConnectionId, connection);
 			}

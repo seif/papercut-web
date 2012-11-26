@@ -34,7 +34,14 @@ namespace Papercut.Smtp
 	/// </summary>
 	public class Processor
 	{
-		#region Events
+	    private string mailFolder;
+
+	    public Processor(string mailFolder)
+	    {
+	        this.mailFolder = mailFolder;
+	    }
+
+	    #region Events
 
 		/// <summary>
 		///   The message received.
@@ -71,7 +78,7 @@ namespace Papercut.Smtp
 		/// <param name="data">
 		/// The data. 
 		/// </param>
-		public static void ProcessCommand(Connection connection, object data)
+		public void ProcessCommand(Connection connection, object data)
 		{
 			if (data is byte[])
 			{
@@ -153,7 +160,7 @@ namespace Papercut.Smtp
 		/// <param name="connection">
 		/// The connection. 
 		/// </param>
-		private static void DATA(Connection connection)
+		private void DATA(Connection connection)
 		{
 			// Check command order
 			if (connection.Session.Sender == null || connection.Session.MailFrom == null
@@ -167,9 +174,9 @@ namespace Papercut.Smtp
 
 			do
 			{
-				// the file must not exists.  the resolution of DataTime.Now may be slow w.r.t. the speed of the received files
-				file = Path.Combine(
-					AppDomain.CurrentDomain.BaseDirectory,
+			    // the file must not exists.  the resolution of DataTime.Now may be slow w.r.t. the speed of the received files
+			    file = Path.Combine(
+					mailFolder,
 					string.Format("{0}-{1}.eml", DateTime.Now.ToString("yyyyMMddHHmmssFF"), Guid.NewGuid().ToString().Substring(0, 2)));
 			}
 			while (File.Exists(file));
