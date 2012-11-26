@@ -104,6 +104,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <DependentUpon>Settings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
     <Compile Include="UI\Spinner.xaml.cs">
       <DependentUpon>Spinner.xaml</DependentUpon>
     </Compile>
@@ -138,7 +143,6 @@
     <Compile Include="UI\ForwardWindow.xaml.cs">
       <DependentUpon>ForwardWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\MessageEntry.cs" />
     <Compile Include="Mime\MailHeaders.cs" />
     <Compile Include="Mime\MailMessageEx.cs" />
     <Compile Include="Mime\MediaTypes.cs" />
@@ -157,34 +161,24 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Smtp\SmtpClient.cs" />
-    <Compile Include="Smtp\Connection.cs" />
-    <Compile Include="Smtp\Logger.cs" />
-    <Compile Include="Smtp\Processor.cs" />
-    <Compile Include="Smtp\Server.cs" />
-    <Compile Include="Smtp\SmtpSession.cs" />
-    <Compile Include="Smtp\Util.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <AppDesigner Include="Properties\" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
     </None>
-    <None Include="Properties\app.manifest" />
+    <None Include="Properties\app.manifest">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="App.ico" />
@@ -226,7 +220,15 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Papercut.Smtp\Papercut.Smtp.csproj">
+      <Project>{010C3E5C-C585-4F9D-820C-1BE1D7BA891F}</Project>
+      <Name>Papercut.Smtp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Smtp\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

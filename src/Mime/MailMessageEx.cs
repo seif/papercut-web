@@ -32,7 +32,7 @@ namespace Net.Mail
 
 	using Papercut.Smtp;
 
-	#endregion
+    #endregion
 
 	/// <summary>
 	/// This class adds a few internet mail headers not already exposed by the System.Net.MailMessage. It also provides support to encapsulate the nested mail attachments in the Children collection.

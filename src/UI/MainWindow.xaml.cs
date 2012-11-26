@@ -27,6 +27,7 @@ namespace Papercut.UI
     using System.Drawing;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Reflection;
     using System.Text;
     using System.Threading;
@@ -133,8 +134,21 @@ namespace Papercut.UI
             // Begin listening for new messages
             Processor.MessageReceived += this.Processor_MessageReceived;
 
+            // Load IP/Port settings
+            IPAddress address;
+            if (Settings.Default.IP == "Any")
+            {
+                address = IPAddress.Any;
+            }
+            else
+            {
+                address = IPAddress.Parse(Settings.Default.IP);
+            }
+
+            var port = Settings.Default.Port;
+
             // Start listening for connections
-            this.server = new Server();
+            this.server = new Server(address,port);
             try
             {
                 this.server.Start();

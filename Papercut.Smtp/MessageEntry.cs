@@ -1,7 +1,7 @@
 /*  
  * Papercut
  *
- *  Copyright Â© 2008 - 2012 Ken Robertson
+ *  Copyright © 2008 - 2012 Ken Robertson
  *  
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  *  
  */
 
-namespace Papercut.UI
+namespace Papercut.Smtp
 {
 	#region Using
 
@@ -26,14 +26,12 @@ namespace Papercut.UI
     using System.IO;
     using System.Text.RegularExpressions;
 
-    using Papercut.Smtp;
-
     #endregion
 
 	/// <summary>
 	/// The message entry.
 	/// </summary>
-	internal class MessageEntry
+	public class MessageEntry
 	{
 		#region Constants and Fields
 
