@@ -83,10 +83,6 @@ namespace Papercut.Smtp
 		/// </summary>
 		private Thread timeoutThread;
 
-	    private readonly string ip;
-
-	    private int port;
-
 	    #endregion
 
 		#region Public Methods and Operators
