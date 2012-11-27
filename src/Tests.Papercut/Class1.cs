@@ -1,10 +1,11 @@
-﻿/* For syntax highlighting and better readability of this file, view it on GitHub:
- * https://github.com/ServiceStack/ServiceStack.Examples/blob/master/src/RestFiles/RestFiles.Tests/AsyncRestClientTests.cs
+﻿/* Based on Test from ServiceStack RestFiles sample:
+ * https://github.com/ServiceStack/ServiceStack.Examples/blob/master/src/RestFiles/RestFiles.Tests/RestClientTests.cs
  */
 
 namespace Tests.Papercut
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Threading;
 
@@ -18,14 +19,8 @@ namespace Tests.Papercut
     using global::Papercut.WebHost.Operations;
     using global::Papercut.WebHost.Types;
 
-    /// <summary>
-    /// These test show how you can call ServiceStack REST web services asynchronously using an IRestClientAsync.
-    /// 
-    /// Async service calls are a great for GUI apps as they can be called without blocking the UI thread.
-    /// They are also great for performance as no time is spent on blocking IO calls.
-    /// </summary>
     [TestFixture]
-    public class AsyncRestClientTests
+    public class RestClientTests
     {
         public string MailFolder;
         protected const string WebServiceHostUrl = "http://localhost:52080/";
@@ -75,60 +70,64 @@ This is a Body
             File.WriteAllText(Path.Combine(path, "2012112622233799-a3.eml"), EmlFileContents);
         }
 
-        public IRestClientAsync CreateAsyncRestClient()
+        public IRestClient CreateRestClient()
         {
             return new JsonServiceClient(WebServiceHostUrl);  //Best choice for Ajax web apps, faster than XML
             //return new XmlServiceClient(WebServiceHostUrl); //Ubiquitous structured data format best for supporting non .NET clients
             //return new JsvServiceClient(WebServiceHostUrl); //Fastest, most compact and resilient format great for .NET to .NET client / server
         }
-
         
-        private static void FailOnAsyncError<T>(T response, Exception ex)
+        [Test]
+        public void Can_Get_to_retrieve_all_mailboxes()
         {
-            Assert.Fail(ex.Message);
+            var restClient = this.CreateRestClient();
+
+            var response = restClient.Get(new Mailboxes());
+
+            Assert.That(response, Is.Not.Null);
+            Assert.That(response.Count, Is.GreaterThan(0));
         }
 
         [Test]
-        public void Can_GetAsync_to_retrieve_mailbox()
+        public void Can_Get_to_retrieve_email()
         {
-            var restClient = this.CreateAsyncRestClient();
+            var restClient = this.CreateRestClient();
 
-            MailboxResult response = null;
-            restClient.GetAsync<MailboxResult>("mailboxes/default",
-                r => response = r, FailOnAsyncError);
+            EmailResponse response = restClient.Get(new Email { Mailbox = "default", Id = "2012112622230791-a8.eml" });
 
-            Thread.Sleep(5000);
+            Assert.That(response, Is.Not.Null);
+            Assert.That(response.From, Is.Not.Null, "'From' property was null");
+        }
+
+        [Test]
+        public void Can_Get_to_retrieve_mailbox()
+        {
+            var restClient = this.CreateRestClient();
+
+            MailboxResponse response = restClient.Get(new Mailbox { Name = "default" });
 
             Assert.That(response.Emails, Is.Not.Null);
             Assert.That(response.Emails.Count, Is.GreaterThan(0));
             Assert.That(response.Emails[0].Body, Is.Not.Null, "Email body was null");
         }
 
+
         [Test]
-        public void Can_PostAsync_to_create_new_mailbox()
+        public void Can_Post_to_create_new_mailbox()
         {
-            var restClient = this.CreateAsyncRestClient();
+            var restClient = this.CreateRestClient();
 
-            MailboxResult response = null;
-            restClient.PostAsync<MailboxResult>("mailboxes/test",
-                new Mailbox(),
-                r => response = r, FailOnAsyncError);
-
-            Thread.Sleep(5000);
+            restClient.Post<MailboxResponse>(new Mailbox(){Name = "test"});
 
             Assert.That(Directory.Exists(Path.Combine(this.MailFolder, "test")));
         }
 
         [Test]
-        public void Can_DeleteAsync_to_delete_mailbox()
+        public void Can_Delete_to_delete_mailbox()
         {
-            var restClient = this.CreateAsyncRestClient();
+            var restClient = this.CreateRestClient();
 
-            MailboxResult response = null;
-            restClient.DeleteAsync<MailboxResult>("mailboxes/testdelete",
-                r => response = r, FailOnAsyncError);
-
-            Thread.Sleep(5000);
+            restClient.Delete(new Mailbox() { Name = "testdelete" });
 
             Assert.That(!Directory.Exists(Path.Combine(this.MailFolder, "testdelete")));
         }
@@ -140,20 +139,18 @@ This is a Body
         [Test]
         public void GET_a_mailbox_that_doesnt_exist_throws_a_404_FileNotFoundException()
         {
-            var restClient = this.CreateAsyncRestClient();
+            var restClient = this.CreateRestClient();
 
             WebServiceException webEx = null;
-            MailboxResult response = null;
 
-            restClient.GetAsync<MailboxResult>("mailboxes/UnknownMailbox",
-               r => response = r,
-               (r, ex) =>
-               {
-                   response = r;
-                   webEx = (WebServiceException)ex;
-               });
-
-            Thread.Sleep(5000);
+            try
+            {
+                restClient.Get<MailboxResponse>("mailboxes/UnknownMailbox");
+            }
+            catch (WebServiceException ex)
+            {
+                webEx = ex;
+            }
 
             Assert.That(webEx.StatusCode, Is.EqualTo(404));
             //Assert.That(webEx.ResponseStatus.ErrorCode, Is.EqualTo(typeof(FileNotFoundException).Name));
@@ -163,41 +160,41 @@ This is a Body
         [Test]
         public void POST_to_an_existing_mailbox_throws_a_409_NotSupportedException()
         {
-            var restClient = new JsonServiceClient(WebServiceHostUrl);
+            var restClient = this.CreateRestClient();
+
+            WebServiceException webEx = null;
 
             try
             {
-                restClient.Post<MailboxResult>("mailboxes/default", new Mailbox());
-
-                Assert.Fail("Should fail with NotSupportedException");
+                restClient.Post<MailboxResponse>(new Mailbox { Name = "default" });
             }
-            catch (WebServiceException webEx)
+            catch (WebServiceException ex)
             {
-                Assert.That(webEx.StatusCode, Is.EqualTo(409));
-                //Assert.That(webEx.ResponseStatus.ErrorCode, Is.EqualTo(typeof(NotSupportedException).Name));
-                //Assert.That(webEx.ResponseStatus.Message,
-                //    Is.EqualTo("Mailbox already exists: default"));
+                webEx = ex;
             }
+
+            Assert.That(webEx.StatusCode, Is.EqualTo(409));
+            //Assert.That(webEx.ResponseStatus.ErrorCode, Is.EqualTo(typeof(NotSupportedException).Name));
+            //Assert.That(webEx.ResponseStatus.Message,
+            //    Is.EqualTo("Mailbox already exists: default"));
         }
 
         [Test]
         public void DELETE_a_non_existing_mailbox_throws_404()
         {
-            var restClient = this.CreateAsyncRestClient();
+            var restClient = this.CreateRestClient();
 
             WebServiceException webEx = null;
-            MailboxResult response = null;
-
-            restClient.DeleteAsync<MailboxResult>("mailboxes/non-existing",
-               r => response = r,
-               (r, ex) =>
-               {
-                   response = r;
-                   webEx = (WebServiceException)ex;
-               });
-
-            Thread.Sleep(5000);
-
+            
+            try
+            {
+                restClient.Delete<MailboxResponse>("mailboxes/non-existing");
+            }
+            catch (WebServiceException ex)
+            {
+                webEx = ex;
+            }
+            
             Assert.That(webEx.StatusCode, Is.EqualTo(404));
             //Assert.That(webEx.ResponseStatus.ErrorCode, Is.EqualTo(typeof(FileNotFoundException).Name));
             //Assert.That(webEx.ResponseStatus.Message, Is.EqualTo("Could not find: non-existing"));
