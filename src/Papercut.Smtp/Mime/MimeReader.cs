@@ -17,17 +17,17 @@
  *  
  */
 
-namespace Net.Mime
+namespace Papercut.Smtp.Mime
 {
 	#region Using
 
-	using System;
-	using System.Collections.Generic;
-	using System.Diagnostics;
-	using System.IO;
-	using System.Net.Mime;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Net.Mime;
 
-	#endregion
+    #endregion
 
 	/// <summary>
 	/// This class is responsible for parsing a string array of lines containing a MIME message.

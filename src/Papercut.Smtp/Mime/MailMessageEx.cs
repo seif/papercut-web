@@ -17,20 +17,16 @@
  *  
  */
 
-namespace Net.Mail
+namespace Papercut.Smtp.Mime
 {
 	#region Using
 
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Net.Mail;
-	using System.Net.Mime;
-	using System.Text.RegularExpressions;
-
-	using Net.Mime;
-
-	using Papercut.Smtp;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Mail;
+    using System.Net.Mime;
+    using System.Text.RegularExpressions;
 
     #endregion
 

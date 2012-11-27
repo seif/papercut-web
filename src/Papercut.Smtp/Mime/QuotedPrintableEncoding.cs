@@ -17,15 +17,15 @@
  *  
  */
 
-namespace Net.Mime
+namespace Papercut.Smtp.Mime
 {
 	#region Using
 
-	using System;
-	using System.IO;
-	using System.Text.RegularExpressions;
+    using System;
+    using System.IO;
+    using System.Text.RegularExpressions;
 
-	#endregion
+    #endregion
 
 	/// <summary>
 	/// This class is based on the QuotedPrintable class written by Bill Gearhart found at http://www.aspemporium.com/classes.aspx?cid=6

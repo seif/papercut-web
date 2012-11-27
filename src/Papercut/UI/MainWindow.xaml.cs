@@ -39,11 +39,9 @@ namespace Papercut.UI
     using System.Windows.Media;
     using System.Windows.Threading;
 
-    using Net.Mail;
-    using Net.Mime;
-
     using Papercut.Properties;
     using Papercut.Smtp;
+    using Papercut.Smtp.Mime;
 
     using Application = System.Windows.Application;
     using ContextMenu = System.Windows.Forms.ContextMenu;

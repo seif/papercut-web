@@ -17,21 +17,19 @@
  *  
  */
 
-namespace Net.Mime
+namespace Papercut.Smtp.Mime
 {
 	#region Using
 
-	using System;
-	using System.Collections.Generic;
-	using System.Collections.Specialized;
-	using System.IO;
-	using System.Net.Mail;
-	using System.Net.Mime;
-	using System.Text;
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.IO;
+    using System.Net.Mail;
+    using System.Net.Mime;
+    using System.Text;
 
-	using Net.Mail;
-
-	#endregion
+    #endregion
 
 	/// <summary>
 	/// This class represents a Mime entity.

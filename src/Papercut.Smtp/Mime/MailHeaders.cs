@@ -17,7 +17,7 @@
  *  
  */
 
-namespace Net.Mail
+namespace Papercut.Smtp.Mime
 {
 	/// <summary>
 	/// The mail headers.

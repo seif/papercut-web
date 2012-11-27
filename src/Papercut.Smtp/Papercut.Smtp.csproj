@@ -49,6 +49,13 @@
     <Compile Include="Connection.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MessageEntry.cs" />
+    <Compile Include="Mime\MailHeaders.cs" />
+    <Compile Include="Mime\MailMessageEx.cs" />
+    <Compile Include="Mime\MediaTypes.cs" />
+    <Compile Include="Mime\MimeEntity.cs" />
+    <Compile Include="Mime\MimeHeaders.cs" />
+    <Compile Include="Mime\MimeReader.cs" />
+    <Compile Include="Mime\QuotedPrintableEncoding.cs" />
     <Compile Include="Processor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />

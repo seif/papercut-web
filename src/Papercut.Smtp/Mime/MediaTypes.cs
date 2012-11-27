@@ -17,13 +17,13 @@
  *  
  */
 
-namespace Net.Mime
+namespace Papercut.Smtp.Mime
 {
 	#region Using
 
-	using System.Net.Mime;
+    using System.Net.Mime;
 
-	#endregion
+    #endregion
 
 	/// <summary>
 	/// The media types.
