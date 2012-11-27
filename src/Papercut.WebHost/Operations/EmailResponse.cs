@@ -1,9 +1,12 @@
 namespace Papercut.WebHost.Types
 {
     using System.Collections.Generic;
+    using System.ComponentModel;
 
     using ServiceStack.ServiceHost;
 
+    [Description("GET to retrieve the mail box\n"
+                   + "DELETE to delete Mailbox\n")]
     [Route("/mailboxes/{Mailbox}/{Id}", "GET,DELETE")]
     public class Email : IReturn<EmailResponse>
     {
