@@ -4,6 +4,8 @@ namespace Papercut.WebHost
 
     using Funq;
 
+    using Papercut.Smtp;
+
     using ServiceStack.WebHost.Endpoints;
 
     public class PapercutHttpListener
@@ -32,14 +34,12 @@ namespace Papercut.WebHost
                 };
 
             container.Register(this.Config);
-
-            //this.Routes.Add<Mailbox>("/mailbox")
-            //    .Add<Mailbox>("/mailbox/{Name}");
         }
 
         public override void Start(string urlBase)
         {
             listeningOn = urlBase;
+            Logger.Write("Server Ready - Listening for new connections " + listeningOn + "...");
             base.Start(urlBase);
         }
     }
