@@ -84,7 +84,6 @@
     <Compile Include="AppConfig.cs" />
     <Compile Include="MailboxService.cs" />
     <Compile Include="Operations\Mailbox.cs" />
-    <Compile Include="Operations\MailboxResponse.cs" />
     <Compile Include="PapercutHttpListener.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -13,18 +13,18 @@ namespace Papercut.WebHost
     using ServiceStack.ServiceInterface;
     using ServiceStack.ServiceInterface.ServiceModel;
 
-    public class MailboxService : RestServiceBase<Mailbox>
+    public class MailboxService : Service
     {
         public AppConfig Config { get; set; }
 
-        public override object OnGet(Mailbox request)
+        public MailboxResult Get(Mailbox request)
         {
             var mailboxPath = new DirectoryInfo(Path.Combine(this.Config.MailFolder, request.Name));
             ValidateMailboxExists(request, mailboxPath);
 
             string[] emails = Directory.GetFiles(mailboxPath.FullName, "*.eml");
 
-            var response = new MailboxResponse(){ Mailbox = new MailboxResult(){ Name = request.Name }};
+            var response = new MailboxResult(){ Name = request.Name };
 
             foreach (var entry in emails.Select(file =>
                 {
@@ -34,7 +34,7 @@ namespace Papercut.WebHost
 
                 }))
             {
-                response.Mailbox.Emails.Add(new Email()
+                response.Emails.Add(new Email()
                     {
                         Body = entry.Body,
                         Subject = entry.Subject,
@@ -54,7 +54,7 @@ namespace Papercut.WebHost
             }
         }
 
-        public override object OnPost(Mailbox request)
+        public MailboxResult Post(Mailbox request)
         {
             var mailboxPath = new DirectoryInfo(Path.Combine(this.Config.MailFolder, request.Name));
             if(mailboxPath.Exists)
@@ -62,17 +62,17 @@ namespace Papercut.WebHost
 
             mailboxPath.Create();
 
-            return new MailboxResponse();
+            return new MailboxResult(){Name = request.Name};
         }
 
-        public override object OnDelete(Mailbox request)
+        public MailboxResult Delete(Mailbox request)
         {
             var mailboxPath = new DirectoryInfo(Path.Combine(this.Config.MailFolder, request.Name));
             ValidateMailboxExists(request, mailboxPath);
 
             Directory.Delete(mailboxPath.FullName, true);
 
-            return new MailboxResponse();
+            return new MailboxResult(){Name = request.Name};
         }
     }
 }
