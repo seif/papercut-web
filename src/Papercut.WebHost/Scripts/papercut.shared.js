@@ -7,7 +7,7 @@
     });
 
     var templateEngine = new ko.jqueryTmplTemplateEngine();
-    templateEngine.makeTemplateSource = function(template) {
+    templateEngine.makeTemplateSource = function (template) {
         // Named template
         if (typeof template == "string") {
             var node = document.getElementById(template);
@@ -20,13 +20,13 @@
                     dataType: "html",
                     type: "GET",
                     timeout: 0,
-                    success: function(response) {
+                    success: function (response) {
                         templateHtml = response;
                     },
-                    error: function(exception) {
+                    error: function (exception) {
                         if (this['useDefaultErrorTemplate'])
                             templateHtml = this['defaultErrorTemplateHtml'].replace('{STATUSCODE}', exception.status).replace('{TEMPLATEID}', templateId).replace('{TEMPLATEURL}', templatePath);
-                    }.bind(this)
+                    } .bind(this)
                 });
 
                 if (templateHtml === null)
@@ -47,21 +47,18 @@
     };
     ko.setTemplateEngine(templateEngine);
 
-    $.get('mailboxes').success(
-        function (data) {
-
-            jQuery.validator.setDefaults({
-                errorPlacement: function (error, element) {
-                    error.insertAfter(element);
-                    error.addClass('help-inline');
-                },
-                errorElement: 'span'
-            });
-
+    $.ajax({
+        async: false,
+        url: 'mailboxes/',
+        dataType: "json",
+        type: "GET",
+        success: function(data) {
+            console.log(data);
             ko.applyBindings(data);
 
-        }).error(function (error) {
+        },
+        error: function(error) {
             console.log(error);
-        });
-    ;
+        }
+    });
 });
