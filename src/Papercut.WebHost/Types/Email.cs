@@ -4,12 +4,12 @@ namespace Papercut.WebHost.Types
 
     public class Email
     {
-        public List<string> To;
+        public List<string> To { get; set; }
 
-        public string From;
+        public string From { get; set; }
 
-        public string Subject;
+        public string Subject { get; set; }
 
-        public string Body;
+        public string Body { get; set; }
     }
 }
