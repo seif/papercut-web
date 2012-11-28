@@ -1,23 +1,27 @@
 ﻿function ViewEmailsModel(mailboxName) {
     var $this = this;
-
     $this.template = 'emails';
     $this.emails = ko.observableArray();
-    $this.mailboxName = ko.observable('');
-    $this.mailboxes = ko.observableArray();
+    $this.selectedMailbox = ko.observable();
 
     $this.emailSortFunction = function (a, b) {
-        return new Date(a.value.email.date) > new Date(b.value.email.date) ? -1 : 1;
+        return new Date(a.Date) > new Date(b.Date) ? -1 : 1;
     };
 
-    $this.chooseMailbox = function (key) {
-        var url = 'mailboxes/' + encodeURIComponent(key);
-        $.get(url).success(function (data) {
-            $this.mailboxName(key);
+    $this.chooseMailbox = function (mailboxName) {
+        var mailboxName = mailboxName.replace(/\//g, '_z_').replace(/ /g, '_');
 
-            var rows = data.doc.rows;
+        $.routes.find('mailbox').routeTo({ name: mailboxName });
+    };
 
-            $this.emails(rows);
+    $this.openMailbox = function (name) {
+        var url = 'mailboxes/' + encodeURIComponent(name);
+        $.getJSON(url).success(function (data) {
+            $this.selectedMailbox(name);
+
+            $this.emails(data.Emails);
+        }).error(function (e) {
+            console.log(e);
         });
     };
 
@@ -25,13 +29,5 @@
         return $this.emails.slice().sort($this.emailSortFunction);
     }, $this.emails);
 
-    $.get('mailboxes/default').success(function (data) {
-        $this.emails(data.doc.rows);
-    });
-
-    $.get('mailboxes').success(function (data) {
-        $this.mailboxes(data.rows);
-    });
-
-    $this.chooseMailbox(mailboxName || 'default');
+    $this.openMailbox(mailboxName || 'default');
 };

@@ -49,6 +49,7 @@ namespace Papercut.WebHost
                         Subject = mailMessage.Subject,
                         To = mailMessage.To.Select(m => m.Address).ToList(),
                         From = mailMessage.From.Address,
+                        Date = mailMessage.DeliveryDate,
                         Links = new List<Link>(new [] { this.GetEmailLink(request.Name, entry) })
                     });
             }
@@ -91,6 +92,7 @@ namespace Papercut.WebHost
                     Body = emailEx.Body,
                     From = emailEx.From.Address,
                     Subject = emailEx.Subject,
+                    Date = emailEx.DeliveryDate,
                     To = emailEx.To.Select(t => t.Address).ToList(),
                     Links = new List<Link>(new[] { this.GetEmailLink(request.Mailbox, emailPath.FullName) })
                 };
@@ -112,6 +114,7 @@ namespace Papercut.WebHost
                 Body = emailEx.Body,
                 From = emailEx.From.Address,
                 Subject = emailEx.Subject,
+                Date = emailEx.DeliveryDate,
                 To = emailEx.To.Select(t => t.Address).ToList(),
                 Links = new List<Link>(new[] { this.GetEmailLink(request.Mailbox, emailPath.FullName) })
             };

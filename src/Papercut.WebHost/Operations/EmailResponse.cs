@@ -1,5 +1,6 @@
 namespace Papercut.WebHost.Types
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
 
@@ -29,6 +30,8 @@ namespace Papercut.WebHost.Types
         public string Subject { get; set; }
 
         public string Body { get; set; }
+
+        public DateTime Date { get; set; }
 
         public List<Link> Links { get; set; }
     }

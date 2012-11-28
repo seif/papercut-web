@@ -28,6 +28,8 @@ namespace Papercut.WebHost
 
         public override void Configure(Container container)
         {
+            ServiceStack.Text.JsConfig.DateHandler = ServiceStack.Text.JsonDateHandler.ISO8601;
+
             this.Config = new AppConfig
                 {
                     MailFolder = ConfigurationManager.AppSettings["MailFolder"]
