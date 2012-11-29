@@ -56,19 +56,22 @@ $(function () {
         };
         ko.setTemplateEngine(templateEngine);
 
-        $.routes.add("/", 'root', function () {
-            viewModel.current(new ViewEmailsModel());
+        $.routes.add("/{name:word}/{id:word}/", 'email', function () {
+            viewModel.current(new ViewEmailModel(this.name, this.id));
         });
+
         $.routes.add("/{name:word}/", 'mailbox', function () {
             viewModel.current(new ViewEmailsModel(this.name));
         });
-        $.routes.add("/{name:word}/{id:word}/", 'email', function () {
-            viewModel.current(new ViewEmailModel(this.name, this.id));
+
+        $.routes.add("/", 'root', function () {
+            viewModel.current(new ViewEmailsModel());
         });
 
         $('a.time').prettyDate();
 
         viewModel.current(new ViewEmailsModel('default'));
+        
         ko.applyBindings(viewModel.current());
     });
 });

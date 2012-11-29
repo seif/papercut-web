@@ -127,6 +127,9 @@
     <Content Include="default.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Models\papercut.viewEmail.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Models\papercut.viewEmails.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -163,8 +166,11 @@
     <Content Include="Scripts\papercut.shared.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Templates\email.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Templates\emailitem.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Templates\emails.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -45,6 +45,7 @@ namespace Papercut.WebHost
 
                 response.Emails.Add(new EmailResponse()
                     {
+                        Id = entry.Split('\\').Last().Split('.').First(),
                         Body = mailMessage.Body,
                         Subject = mailMessage.Subject,
                         To = mailMessage.To.Select(m => m.Address).ToList(),
@@ -82,13 +83,14 @@ namespace Papercut.WebHost
         {
             var mailboxPath = new DirectoryInfo(Path.Combine(this.Config.MailFolder, request.Mailbox));
             ValidateExists(request.Mailbox, mailboxPath);
-            var emailPath = new FileInfo(Path.Combine(mailboxPath.FullName, request.Id));
+            var emailPath = new FileInfo(Path.Combine(mailboxPath.FullName, request.Id + ".eml"));
             ValidateExists(request.Id, emailPath);
 
             var emailEx = GetMailMessage(emailPath.FullName);
             
             return new EmailResponse()
                 {
+                    Id = request.Id,
                     Body = emailEx.Body,
                     From = emailEx.From.Address,
                     Subject = emailEx.Subject,

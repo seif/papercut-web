@@ -23,6 +23,8 @@ namespace Papercut.WebHost.Types
             Links = new List<Link>();
         }
 
+        public string Id { get; set; }
+
         public List<string> To { get; set; }
 
         public string From { get; set; }

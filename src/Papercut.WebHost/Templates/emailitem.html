@@ -1,11 +1,14 @@
-﻿<tr class="question">
+﻿<tr class="email-item" data-bind="click: function() { viewModel.current().chooseEmailItem(Id); }">
     <td>
-        <span data-bind="text: From"></span>
+        <a class="email-from" href="#" data-bind="text: From" />
     </td>
     <td>
-        <span data-bind="text: Subject"></span>
+        <a class="email-to" href="#" data-bind="text: To" />
     </td>
     <td>
-        <span data-bind="text: Date"></span>
+        <a class="email-subject" href="#" data-bind="text: Subject" />
+    </td>
+    <td>
+        <a class="email-date" href="#" data-bind="text: Date" />
     </td>
 </tr>

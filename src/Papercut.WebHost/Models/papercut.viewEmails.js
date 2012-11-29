@@ -14,6 +14,10 @@
         $.routes.find('mailbox').routeTo({ name: mailboxName });
     };
 
+    $this.chooseEmailItem = function (id) {
+        $.routes.find('email').routeTo({ name: mailboxName, id: id });
+    };
+
     $this.openMailbox = function (name) {
         var url = 'mailboxes/' + encodeURIComponent(name);
         $.getJSON(url).success(function (data) {
