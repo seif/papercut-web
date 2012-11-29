@@ -4,8 +4,8 @@
 };
 
 $(function () {
-    
-    
+
+
     $('.sidebar-nav li').click(function () {
 
         $(this).siblings().removeClass('active');
@@ -56,11 +56,13 @@ $(function () {
         };
         ko.setTemplateEngine(templateEngine);
 
-        $.routes.add("/{name:word}/{id:word}/", 'email', function () {
+        $.routes.addDataType('stringwithdash', { regexp: /[a-zA-Z_0-9\-]+?/ });
+
+        $.routes.add("/{name:stringwithdash}/{id:stringwithdash}/", 'email', function () {
             viewModel.current(new ViewEmailModel(this.name, this.id));
         });
 
-        $.routes.add("/{name:word}/", 'mailbox', function () {
+        $.routes.add("/{name:stringwithdash}/", 'mailbox', function () {
             viewModel.current(new ViewEmailsModel(this.name));
         });
 
@@ -71,7 +73,7 @@ $(function () {
         $('a.time').prettyDate();
 
         viewModel.current(new ViewEmailsModel('default'));
-        
+
         ko.applyBindings(viewModel.current());
     });
 });
