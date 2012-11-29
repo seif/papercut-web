@@ -5,3 +5,4 @@ _ReSharper.Papercut
 *.TeamCity.user
 Papercut.suo
 Papercut.sln.docstates.suo
+*.DotSettings.user
