@@ -93,7 +93,7 @@ This is a Body
         {
             var restClient = this.CreateRestClient();
 
-            EmailResponse response = restClient.Get(new Email { Mailbox = "default", Id = "2012112622230791-a8.eml" });
+            EmailResponse response = restClient.Get(new Email { Mailbox = "default", Id = "2012112622230791-a8" });
 
             Assert.That(response, Is.Not.Null);
             Assert.That(response.From, Is.Not.Null, "'From' property was null");
