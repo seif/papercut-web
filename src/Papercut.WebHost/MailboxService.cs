@@ -42,10 +42,10 @@ namespace Papercut.WebHost
             foreach (var entry in emails)
             {
                 var mailMessage = GetMailMessage(entry);
-
+				
                 response.Emails.Add(new EmailResponse()
                     {
-                        Id = entry.Split('\\').Last().Split('.').First(),
+						Id = Path.GetFileNameWithoutExtension(entry),
                         Body = mailMessage.Body,
                         Subject = mailMessage.Subject,
                         To = mailMessage.To.Select(m => m.Address).ToList(),
