@@ -41,18 +41,29 @@ namespace Papercut.WebHost
 
             foreach (var entry in emails)
             {
-                var mailMessage = GetMailMessage(entry);
-				
-                response.Emails.Add(new EmailResponse()
-                    {
-						Id = Path.GetFileNameWithoutExtension(entry),
-                        Body = mailMessage.Body,
-                        Subject = mailMessage.Subject,
-                        To = mailMessage.To.Select(m => m.Address).ToList(),
-                        From = mailMessage.From.Address,
-                        Date = mailMessage.DeliveryDate,
-                        Links = new List<Link>(new [] { this.GetEmailLink(request.Name, entry) })
-                    });
+				try {
+					var mailMessage = GetMailMessage(entry);
+
+					response.Emails.Add(new EmailResponse()
+					                    {
+					                    	Id = Path.GetFileNameWithoutExtension(entry),
+					                    	Body = mailMessage.Body,
+					                    	Subject = mailMessage.Subject,
+					                    	To = mailMessage.To.Select(m => m.Address).ToList(),
+					                    	From = mailMessage.From.Address,
+					                    	Date = mailMessage.DeliveryDate,
+					                    	Links = new List<Link>(new[] {this.GetEmailLink(request.Name, entry)})
+					                    });
+				} catch(Exception e) {
+					response.Emails.Add(new EmailResponse()
+					                    {
+											Id = Path.GetFileNameWithoutExtension(entry),
+											Body = e.Message,
+											Subject = "[Error reading email]",
+											From = "-",
+											To = new List<string>()
+					                    });
+				}
             }
         
             return response;
@@ -86,18 +97,30 @@ namespace Papercut.WebHost
             var emailPath = new FileInfo(Path.Combine(mailboxPath.FullName, request.Id + ".eml"));
             ValidateExists(request.Id, emailPath);
 
-            var emailEx = GetMailMessage(emailPath.FullName);
-            
-            return new EmailResponse()
-                {
-                    Id = request.Id,
-                    Body = emailEx.Body,
-                    From = emailEx.From.Address,
-                    Subject = emailEx.Subject,
-                    Date = emailEx.DeliveryDate,
-                    To = emailEx.To.Select(t => t.Address).ToList(),
-                    Links = new List<Link>(new[] { this.GetEmailLink(request.Mailbox, emailPath.FullName) })
-                };
+			try {
+				var emailEx = GetMailMessage(emailPath.FullName);
+
+				return new EmailResponse()
+				       {
+				       	Id = request.Id,
+				       	Body = emailEx.Body,
+				       	From = emailEx.From.Address,
+				       	Subject = emailEx.Subject,
+				       	Date = emailEx.DeliveryDate,
+				       	To = emailEx.To.Select(t => t.Address).ToList(),
+				       	Links = new List<Link>(new[] {this.GetEmailLink(request.Mailbox, emailPath.FullName)})
+				       };
+			}catch(Exception e) {
+				return new EmailResponse()
+				       {
+				       	Id = request.Id,
+				       	Body = "[Email could not be loaded]",
+				       	Subject = "[Error reading email]",
+				       	From = "-",
+				       	To = new List<string>()
+				       };
+
+			}
         }
 
         public EmailResponse Delete(Email request)
