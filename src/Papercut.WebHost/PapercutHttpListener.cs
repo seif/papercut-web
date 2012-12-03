@@ -1,3 +1,5 @@
+using System;
+
 namespace Papercut.WebHost
 {
     using System.Configuration;
@@ -32,7 +34,8 @@ namespace Papercut.WebHost
 
             this.Config = new AppConfig
                 {
-                    MailFolder = ConfigurationManager.AppSettings["MailFolder"]
+                    MailFolder = ConfigurationManager.AppSettings["MailFolder"],
+                    EmailsPerPage = Convert.ToInt32(ConfigurationManager.AppSettings["EmailsPerPage"])
                 };
 
             container.Register(this.Config);

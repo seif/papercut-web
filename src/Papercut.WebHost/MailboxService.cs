@@ -35,9 +35,24 @@ namespace Papercut.WebHost
             var mailboxPath = new DirectoryInfo(Path.Combine(this.Config.MailFolder, request.Name));
             ValidateExists(request.Name, mailboxPath);
 
-            string[] emails = Directory.GetFiles(mailboxPath.FullName, "*.eml");
+            request.Page = request.Page == 0 ? 1 : request.Page; 
 
-            var response = new MailboxResponse() { Name = request.Name, Links = new List<Link>(new[] { this.GetMailboxLink(request.Name) }) };
+            var emails = mailboxPath.GetFiles("*.eml")
+                .OrderByDescending(x => x.LastWriteTimeUtc)
+                .Skip(Config.EmailsPerPage * (request.Page - 1))
+                .Take(Config.EmailsPerPage)
+                .Select(x => x.FullName);
+
+            var response = new MailboxResponse()
+            {
+                Name = request.Name, 
+                Links = new List<Link>(new[]
+                {
+                    this.GetMailboxLink(request.Name), 
+                    this.GetNextPageLink(request.Name, request.Page),
+                    this.GetPreviousPageLink(request.Name, request.Page)
+                })
+            };
 
             foreach (var entry in emails)
             {
@@ -156,6 +171,21 @@ namespace Papercut.WebHost
             return new Link { Href = string.Format("mailboxes/{0}/", mailbox), Rel = "self" };
         }
 
+        private Link GetPreviousPageLink(string mailbox, int currentPage)
+        {
+            return GetPageNavigationLink(mailbox, currentPage == 1 ? 1 : --currentPage, "previous");
+        }
+
+        private Link GetNextPageLink(string mailbox, int currentPage)
+        {
+            return GetPageNavigationLink(mailbox, ++currentPage, "previous");
+        }
+
+        private Link GetPageNavigationLink(string mailbox, int page, string rel)
+        {
+            return new Link {Href = string.Format("mailboxes/{0}?page={1}", mailbox, page), Rel = rel};
+        }
+        
         private static MailMessageEx GetMailMessage(string file)
         {
             var allLines = File.ReadAllLines(file);

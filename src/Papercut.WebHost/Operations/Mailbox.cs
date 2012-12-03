@@ -16,6 +16,8 @@ namespace Papercut.WebHost.Operations
         public string Name { get; set; }
 
         public List<Link> Links { get; set; }
+
+        public int Page { get; set; }
     }
 
     [Route("/mailboxes", "GET")]

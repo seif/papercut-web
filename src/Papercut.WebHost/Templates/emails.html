@@ -10,7 +10,9 @@
                 <div class="row-fluid">
                     <div class="span4">
                         <h2>Recieved Emails</h2>
-						<h3 data-bind="text: selectedMailbox" />
+                        <h3 data-bind="text: selectedMailbox" />
+                        <a href='#' data-bind="click: function() { viewModel.current().previous();  }">&lt; Previous</a> | 
+                        <a href='#' data-bind="click: function() { viewModel.current().next();  }">Next &gt;</a>
                     </div>
                 </div>
                 <div class="row-fluid email">

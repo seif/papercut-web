@@ -3,7 +3,8 @@
     $this.template = 'emails';
     $this.emails = ko.observableArray();
     $this.selectedMailbox = ko.observable();
-
+    $this.links = Array();
+    
     $this.emailSortFunction = function (a, b) {
         return new Date(a.Date) > new Date(b.Date) ? -1 : 1;
     };
@@ -18,12 +19,24 @@
         $.routes.find('email').routeTo({ name: mailboxName, id: id });
     };
 
+    $this.next = function () {
+        $this.get($this.links[1].Href);
+    };
+
+    $this.previous = function () {
+        $this.get($this.links[2].Href);
+    };
+
     $this.openMailbox = function (name) {
         var url = 'mailboxes/' + encodeURIComponent(name);
+        $this.get(url);
+    };
+
+    $this.get = function(url) {
         $.getJSON(url).success(function (data) {
             $this.selectedMailbox(name);
-
             $this.emails(data.Emails);
+            $this.links = data.Links;
         }).error(function (e) {
             console.log(e);
         });
