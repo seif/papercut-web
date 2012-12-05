@@ -178,7 +178,7 @@ namespace Papercut.WebHost
 
         private Link GetNextPageLink(string mailbox, int currentPage)
         {
-            return GetPageNavigationLink(mailbox, ++currentPage, "previous");
+            return GetPageNavigationLink(mailbox, ++currentPage, "next");
         }
 
         private Link GetPageNavigationLink(string mailbox, int page, string rel)
