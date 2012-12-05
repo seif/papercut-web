@@ -70,6 +70,15 @@ This is a Body
             File.WriteAllText(Path.Combine(path, "2012112622233799-a3.eml"), EmlFileContents);
         }
 
+        [TearDown]
+        public void OnAfterEachTest()
+        {
+            if (Directory.Exists(this.MailFolder))
+            {
+                Directory.Delete(this.MailFolder, true);
+            }
+        }
+
         public IRestClient CreateRestClient()
         {
             return new JsonServiceClient(WebServiceHostUrl);  //Best choice for Ajax web apps, faster than XML
