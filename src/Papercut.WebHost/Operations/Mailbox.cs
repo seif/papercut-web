@@ -38,5 +38,9 @@ namespace Papercut.WebHost.Operations
         public List<Link> Links { get; set; }
 
         public string Name { get; set; }
+
+        public int Page { get; set; }
+
+        public int Pages { get; set; }
     }
 }

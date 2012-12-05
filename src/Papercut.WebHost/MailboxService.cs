@@ -37,7 +37,10 @@ namespace Papercut.WebHost
 
             request.Page = request.Page == 0 ? 1 : request.Page; 
 
-            var emails = mailboxPath.GetFiles("*.eml")
+            var emails = mailboxPath.GetFiles("*.eml");
+            var numPages = (int)Math.Ceiling(emails.Count() / ((double)Config.EmailsPerPage));
+
+            var emailsToRead = emails
                 .OrderByDescending(x => x.LastWriteTimeUtc)
                 .Skip(Config.EmailsPerPage * (request.Page - 1))
                 .Take(Config.EmailsPerPage)
@@ -49,12 +52,14 @@ namespace Papercut.WebHost
                 Links = new List<Link>(new[]
                 {
                     this.GetMailboxLink(request.Name), 
-                    this.GetNextPageLink(request.Name, request.Page),
+                    this.GetNextPageLink(request.Name, request.Page, numPages),
                     this.GetPreviousPageLink(request.Name, request.Page)
-                })
+                }),
+                Page = request.Page,
+                Pages = numPages
             };
 
-            foreach (var entry in emails)
+            foreach (var entry in emailsToRead)
             {
 				try {
 					var mailMessage = GetMailMessage(entry);
@@ -176,9 +181,9 @@ namespace Papercut.WebHost
             return GetPageNavigationLink(mailbox, currentPage == 1 ? 1 : --currentPage, "previous");
         }
 
-        private Link GetNextPageLink(string mailbox, int currentPage)
+        private Link GetNextPageLink(string mailbox, int currentPage, int numPages)
         {
-            return GetPageNavigationLink(mailbox, ++currentPage, "next");
+            return GetPageNavigationLink(mailbox, currentPage == numPages ? currentPage : ++currentPage, "next");
         }
 
         private Link GetPageNavigationLink(string mailbox, int page, string rel)
