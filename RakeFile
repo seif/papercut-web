@@ -1,0 +1,92 @@
+require 'fileutils'
+require 'rubygems'
+require 'albacore'
+require 'yaml'
+
+def build_settings
+  YAML.load_file('./Build/buildSettings.yml')
+end
+
+def get_build_output
+	File.join(FileUtils.pwd , build_settings['buildOutputDirectoryName'])
+end
+
+require './Build/teamcity.rb'
+
+task :default => 'build:build_solution'
+
+configuration = ENV['configuration'] || 'Debug'
+log_level = :verbose
+build_command = File.join(ENV['windir'], 'Microsoft.NET', 'Framework',  build_settings['dotNetFramework'], 'MSBuild.exe')
+
+namespace :build do
+  desc 'Update assembly info'
+  assemblyinfo :update_version do |asm|
+    asm.output_file = build_settings['commonAssemblyFilePath']
+    
+    asm.version = ConfigUtils.get_assembly_version(build_settings)
+	asm.file_version = ConfigUtils.get_file_version(build_settings)
+	asm.custom_attributes :AssemblyInformationalVersionAttribute => ConfigUtils.get_informational_version(build_settings)
+    asm.company_name = 'Wiggle Ltd.'
+    asm.product_name = build_settings['productName']
+    asm.copyright = 'Copyright 2012 Wiggle Ltd. All rights reserved'    
+    
+    puts "The version is #{asm.file_version}"
+	puts "##teamcity[buildNumber '#{ConfigUtils.get_informational_version(build_settings)}']"
+  end
+  
+  desc 'Clean build output directory'
+  task :clean_build_output do
+	FileUtils.rm_rf get_build_output
+    FileUtils.mkdir_p get_build_output
+	FileUtils.mkdir_p File.join(get_build_output, 'Configurations')
+	FileUtils.mkdir_p File.join(get_build_output, 'NugetPackages')
+  end
+  
+  desc 'Build the solution'
+  msbuild :build_solution => ['build:clean_build_output'] do |msb|
+    msb.log_level = log_level
+    msb.command = build_command
+    msb.properties = { :configuration => configuration, :platform => 'x86', :outputpath =>  get_build_output }
+	msb.targets :Rebuild
+    msb.solution = build_settings['solutionFilePath']
+  end
+  
+end
+
+namespace :test do
+  desc "Create test results output directory"
+  task :create_test_output_dir do
+    mkdir_p 'Artefacts/nUnitTestResults'
+  end
+
+  desc "Create spec results directory"
+  task :create_mspec_directory do	
+    mkdir_p('Artefacts/SpecResults/')
+  end
+  
+  desc "Run all tests"
+  task :run_all_tests => ['build:build_solution'] do
+	Rake::Task["test:run_unit_tests"].invoke unless (build_settings['nunit_test_assemblies'].nil?)
+	Rake::Task["test:run_specs"].invoke unless (build_settings['mspec_test_assemblies'].nil?)
+  end
+    
+  desc "Run the unit tests"
+  nunit :run_unit_tests => ['create_test_output_dir'] do |runner|
+    runner.log_level = log_level
+    runner.xml_output = 'Artefacts/nUnitTestResults/NUnit.Tests-results.xml'
+    runner.command = './Build/Tools/Nunit/nunit-console-x86.exe'
+    runner.assemblies = build_settings['nunit_test_assemblies']
+  end
+
+  desc "Run Machine.Specifications specs"
+  mspec :run_specs => ['create_mspec_directory'] do |runner|
+    runner.log_level = log_level
+    runner.command = './Build/Tools/mspec/mspec-clr4.exe'
+	runner.html_output = './Artefacts/SpecResults/index.html'
+    runner.assemblies build_settings['mspec_test_assemblies']
+	runner.parameters = '--teamcity'
+	runner.options '--exclude "Integration,Database"'
+  end
+end
+

@@ -1,0 +1,3 @@
+buildOutputDirectoryName: 'BuildOutput'
+solutionFilePath: 'Papercut.sln'
+dotNetFramework: 'v4.0.30319'
