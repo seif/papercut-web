@@ -1,3 +1,6 @@
 buildOutputDirectoryName: 'BuildOutput'
 solutionFilePath: 'Papercut.sln'
 dotNetFramework: 'v4.0.30319'
+nunit_test_assemblies:
+  -
+    BuildOutput/Tests.Papercut.dll

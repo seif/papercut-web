@@ -13,34 +13,17 @@ end
 
 require './Build/teamcity.rb'
 
-task :default => 'build:build_solution'
+task :default => 'test:run_all_tests'
 
 configuration = ENV['configuration'] || 'Debug'
 log_level = :verbose
 build_command = File.join(ENV['windir'], 'Microsoft.NET', 'Framework',  build_settings['dotNetFramework'], 'MSBuild.exe')
 
 namespace :build do
-  desc 'Update assembly info'
-  assemblyinfo :update_version do |asm|
-    asm.output_file = build_settings['commonAssemblyFilePath']
-    
-    asm.version = ConfigUtils.get_assembly_version(build_settings)
-	asm.file_version = ConfigUtils.get_file_version(build_settings)
-	asm.custom_attributes :AssemblyInformationalVersionAttribute => ConfigUtils.get_informational_version(build_settings)
-    asm.company_name = 'Wiggle Ltd.'
-    asm.product_name = build_settings['productName']
-    asm.copyright = 'Copyright 2012 Wiggle Ltd. All rights reserved'    
-    
-    puts "The version is #{asm.file_version}"
-	puts "##teamcity[buildNumber '#{ConfigUtils.get_informational_version(build_settings)}']"
-  end
-  
   desc 'Clean build output directory'
   task :clean_build_output do
 	FileUtils.rm_rf get_build_output
     FileUtils.mkdir_p get_build_output
-	FileUtils.mkdir_p File.join(get_build_output, 'Configurations')
-	FileUtils.mkdir_p File.join(get_build_output, 'NugetPackages')
   end
   
   desc 'Build the solution'
