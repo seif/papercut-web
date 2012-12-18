@@ -1,40 +1,38 @@
-﻿<div data-bind="">
-    <dl>
-        <dt class="ib"> Id</dt>
-        <dd data-bind="text: Id" />
+﻿        <div class="row-fluid">
+            <div class="span3">
+                <div class="well">
+                    <ul class="nav nav-list" id="mailboxes" data-bind="template: { name: 'mailboxitem', foreach: viewModel.mailboxes }">
+                    </ul>
+                </div>
+            </div>
+            <div class="span9">                
+                <div class="row-fluid">
+                    <div class="span4">
+                        <h2>Recieved Emails</h2>
+                    </div>
+                </div>
+                <div class="row-fluid email">
+                    <div data-bind="">
+                        <dl>
+                            <dt class="ib"> Id</dt>
+                            <dd><pre data-bind="text: Id" /></dd>
         
-        <dt class="ib"> To</dt>
-        <dd data-bind="text: To">
+                            <dt class="ib"> To</dt>
+                            <dd><pre data-bind="text: To"/></dd>
         
-        <dt class="ib"> From</dt>
-        <dd data-bind="text: From" />
+                            <dt class="ib"> From</dt>
+                            <dd><pre data-bind="text: From" /></dd>
         
-        <dt class="ib"> Subject</dt>
-        <dd data-bind="text: Subject" />
+                            <dt class="ib"> Subject</dt>
+                            <dd><pre data-bind="text: Subject" /></dd>
         
-        <dt class="ib"> Body</dt>
-        <dd data-bind="html: Body" />
+                            <dt class="ib"> Body</dt>
+                            <dd><pre data-bind="html: Body" /></dd>
         
-        <dt class="ib"> Date</dt>
-        <dd data-bind="text: Date"/>
-        
-        <dt class="ib"> Links</dt>
-        <dd>
-            <!--<table id="tbl-0">
-                <caption></caption>
-                <thead>
-                    <tr>
-                        <th id="h-0-0"><b></b> Rel</th>
-                        <th id="h-0-1"><b></b> Href</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>self</td>
-                        <td>mailboxes/default/2012111616245374.eml</td>
-                    </tr>
-                </tbody>
-            </table>-->
-        </dd>
-    </dl>
-</div>
+                            <dt class="ib"> Date</dt>
+                            <dd><pre data-bind="text: Date" /></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>

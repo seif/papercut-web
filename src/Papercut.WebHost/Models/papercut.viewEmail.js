@@ -21,7 +21,7 @@
             $this.From(data.From);
             $this.To(data.To);
             $this.Subject(data.Subject);
-            $this.Body(data.Body.replace(/\n/g, '<br />'));
+            $this.Body(data.Body);
             $this.Date(data.Date);
         }).error(function (e) {
             console.log(e);
