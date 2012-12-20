@@ -276,7 +276,7 @@ namespace Papercut.Smtp.Mime
 						message.ReplyTo = CreateMailAddress(value);
 						break;
 					case MailHeaders.Subject:
-						message.Subject = value;
+						message.Subject = CreateSubject(value);
 						break;
 					case MailHeaders.To:
 						PopulateAddressList(value, message.To);
@@ -287,7 +287,17 @@ namespace Papercut.Smtp.Mime
 			return message;
 		}
 
-		/// <summary>
+	    private static string CreateSubject(string value)
+	    {
+            if (value.StartsWith("=?utf-8?B?"))
+	        {
+	            return System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(value.Substring(10, value.Length - 12)));
+	        }
+
+	        return value;
+	    }
+
+	    /// <summary>
 		/// Populates the address list.
 		/// </summary>
 		/// <param name="addressList">
