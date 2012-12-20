@@ -18,23 +18,10 @@ namespace Papercut.WebHost
     {
         public AppConfig Config { get; set; }
 
-        public List<Mailbox> Get(Mailboxes request)
+        public MailboxResponse Get(MailboxRequest request)
         {
-            var mailboxes =
-                Directory.GetDirectories(this.Config.MailFolder).Select(m =>
-                    {
-                        string name = new DirectoryInfo(m).Name;
-                        return new Mailbox() { Name = name, Links = new List<Link>(new[] { this.GetMailboxLink(name) }) };
-                    }).ToList();
-
-            return mailboxes;
-        }
-
-        public MailboxResponse Get(Mailbox request)
-        {
-            var mailboxPath = new DirectoryInfo(Path.Combine(this.Config.MailFolder, request.Name));
-            ValidateExists(request.Name, mailboxPath);
-
+            var mailboxPath = new DirectoryInfo(this.Config.MailFolder);
+            
             request.Page = request.Page == 0 ? 1 : request.Page; 
 
             var emails = mailboxPath.GetFiles("*.eml");
@@ -48,12 +35,10 @@ namespace Papercut.WebHost
 
             var response = new MailboxResponse()
             {
-                Name = request.Name, 
                 Links = new List<Link>(new[]
                 {
-                    this.GetMailboxLink(request.Name), 
-                    this.GetNextPageLink(request.Name, request.Page, numPages),
-                    this.GetPreviousPageLink(request.Name, request.Page)
+                    this.GetNextPageLink(request.Page, numPages),
+                    this.GetPreviousPageLink(request.Page)
                 }),
                 Page = request.Page,
                 Pages = numPages
@@ -72,7 +57,7 @@ namespace Papercut.WebHost
 					                    	To = mailMessage.To.Select(m => m.Address).ToList(),
 					                    	From = mailMessage.From.Address,
 					                    	Date = mailMessage.DeliveryDate,
-					                    	Links = new List<Link>(new[] {this.GetEmailLink(request.Name, entry)})
+					                    	Links = new List<Link>(new[] {this.GetEmailLink(entry)})
 					                    });
 				} catch(Exception e) {
 					response.Emails.Add(new EmailResponse()
@@ -89,31 +74,9 @@ namespace Papercut.WebHost
             return response;
         }
 
-        public MailboxResponse Post(Mailbox request)
-        {
-            var mailboxPath = new DirectoryInfo(Path.Combine(this.Config.MailFolder, request.Name));
-            if(mailboxPath.Exists)
-                throw new HttpError(HttpStatusCode.Conflict, new NotSupportedException("Mailbox already exists: " + request.Name));
-
-            mailboxPath.Create();
-
-            return new MailboxResponse(){Name = request.Name};
-        }
-
-        public MailboxResponse Delete(Mailbox request)
-        {
-            var mailboxPath = new DirectoryInfo(Path.Combine(this.Config.MailFolder, request.Name));
-            ValidateExists(request.Name, mailboxPath);
-
-            Directory.Delete(mailboxPath.FullName, true);
-
-            return new MailboxResponse() { Name = request.Name, Links = new List<Link>(new[] { this.GetMailboxLink(request.Name) }) };
-        }
-
         public EmailResponse Get(Email request)
         {
-            var mailboxPath = new DirectoryInfo(Path.Combine(this.Config.MailFolder, request.Mailbox));
-            ValidateExists(request.Mailbox, mailboxPath);
+            var mailboxPath = new DirectoryInfo(this.Config.MailFolder);
             var emailPath = new FileInfo(Path.Combine(mailboxPath.FullName, request.Id + ".eml"));
             ValidateExists(request.Id, emailPath);
 
@@ -128,7 +91,7 @@ namespace Papercut.WebHost
 				       	Subject = emailEx.Subject,
 				       	Date = emailEx.DeliveryDate,
 				       	To = emailEx.To.Select(t => t.Address).ToList(),
-				       	Links = new List<Link>(new[] {this.GetEmailLink(request.Mailbox, emailPath.FullName)})
+				       	Links = new List<Link>(new[] {this.GetEmailLink(emailPath.FullName)})
 				       };
 			}catch(Exception e) {
 				return new EmailResponse()
@@ -145,8 +108,7 @@ namespace Papercut.WebHost
 
         public EmailResponse Delete(Email request)
         {
-            var mailboxPath = new DirectoryInfo(Path.Combine(this.Config.MailFolder, request.Mailbox));
-            ValidateExists(request.Mailbox, mailboxPath);
+            var mailboxPath = new DirectoryInfo(this.Config.MailFolder);
             var emailPath = new FileInfo(Path.Combine(mailboxPath.FullName, request.Id));
             ValidateExists(request.Id, emailPath);
 
@@ -161,34 +123,38 @@ namespace Papercut.WebHost
                 Subject = emailEx.Subject,
                 Date = emailEx.DeliveryDate,
                 To = emailEx.To.Select(t => t.Address).ToList(),
-                Links = new List<Link>(new[] { this.GetEmailLink(request.Mailbox, emailPath.FullName) })
+                Links = new List<Link>(new[] { this.GetEmailLink(emailPath.FullName) })
             };
         }
 
-
-        private Link GetEmailLink(string mailbox, string entry)
+        public void Delete(MailboxRequest request)
         {
-            return new Link { Href = string.Format("mailboxes/{0}/{1}", mailbox, new FileInfo(entry).Name), Rel = "self" };
+            var mailboxPath = new DirectoryInfo(this.Config.MailFolder);
+
+            foreach (var file in mailboxPath.GetFiles("*.eml"))
+            {
+                file.Delete();
+            }
         }
 
-        private Link GetMailboxLink(string mailbox)
+        private Link GetEmailLink(string entry)
         {
-            return new Link { Href = string.Format("mailboxes/{0}/", mailbox), Rel = "self" };
+            return new Link { Href = new FileInfo(entry).Name, Rel = "self" };
         }
 
-        private Link GetPreviousPageLink(string mailbox, int currentPage)
+        private Link GetPreviousPageLink(int currentPage)
         {
-            return GetPageNavigationLink(mailbox, currentPage == 1 ? 1 : --currentPage, "previous");
+            return GetPageNavigationLink(currentPage == 1 ? 1 : --currentPage, "previous");
         }
 
-        private Link GetNextPageLink(string mailbox, int currentPage, int numPages)
+        private Link GetNextPageLink(int currentPage, int numPages)
         {
-            return GetPageNavigationLink(mailbox, currentPage == numPages ? currentPage : ++currentPage, "next");
+            return GetPageNavigationLink(currentPage == numPages ? currentPage : ++currentPage, "next");
         }
 
-        private Link GetPageNavigationLink(string mailbox, int page, string rel)
+        private Link GetPageNavigationLink(int page, string rel)
         {
-            return new Link {Href = string.Format("mailboxes/{0}?page={1}", mailbox, page), Rel = rel};
+            return new Link {Href = string.Format("?page={0}", page), Rel = rel};
         }
         
         private static MailMessageEx GetMailMessage(string file)

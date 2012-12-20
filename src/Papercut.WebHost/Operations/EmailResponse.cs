@@ -6,13 +6,11 @@ namespace Papercut.WebHost.Types
 
     using ServiceStack.ServiceHost;
 
-    [Description("GET to retrieve the mail box\n"
-                   + "DELETE to delete Mailbox\n")]
-    [Route("/mailboxes/{Mailbox}/{Id}", "GET,DELETE")]
+    [Description("GET to retrieve the email\n"
+                   + "DELETE to delete email\n")]
+    [Route("/email/{Id}", "GET,DELETE")]
     public class Email : IReturn<EmailResponse>
     {
-        public string Mailbox { get; set; }
-
         public string Id { get; set; }
     }
 

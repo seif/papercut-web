@@ -7,22 +7,12 @@ namespace Papercut.WebHost.Operations
 
     using ServiceStack.ServiceHost;
 
-    [Description("GET to retrieve the mail box\n"
-               + "POST to create a new mailbox\n"
-               + "DELETE to delete Mailbox\n")]
-    [Route("/mailboxes/{Name}", "GET,POST,DELETE")]	
-    public class Mailbox : IReturn<MailboxResponse>
+    [Description("GET to retrieve all emails\n"
+                   + "DELETE to delete all emails\n")]
+    [Route("/emails", "GET,DELETE")]
+    public class MailboxRequest : IReturn<MailboxResponse>
     {
-        public string Name { get; set; }
-
-        public List<Link> Links { get; set; }
-
         public int Page { get; set; }
-    }
-
-    [Route("/mailboxes", "GET")]
-    public class Mailboxes : IReturn<List<Mailbox>>
-    {
     }
 
 
@@ -36,8 +26,6 @@ namespace Papercut.WebHost.Operations
         public List<EmailResponse> Emails { get; set; }
 
         public List<Link> Links { get; set; }
-
-        public string Name { get; set; }
 
         public int Page { get; set; }
 

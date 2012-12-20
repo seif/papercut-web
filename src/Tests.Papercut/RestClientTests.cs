@@ -63,11 +63,10 @@ This is a Body
                 Directory.Delete(this.MailFolder, true);
             }
             Directory.CreateDirectory(this.MailFolder);
-            Directory.CreateDirectory(Path.Combine(this.MailFolder , "testdelete"));
-            var path = Path.Combine(this.MailFolder, "default");
-            Directory.CreateDirectory(path);
-            File.WriteAllText(Path.Combine(path, "2012112622230791-a8.eml"), EmlFileContents);
-            File.WriteAllText(Path.Combine(path, "2012112622233799-a3.eml"), EmlFileContents);
+
+            Directory.CreateDirectory(MailFolder);
+            File.WriteAllText(Path.Combine(MailFolder, "2012112622230791-a8.eml"), EmlFileContents);
+            File.WriteAllText(Path.Combine(MailFolder, "2012112622233799-a3.eml"), EmlFileContents);
         }
 
         [TearDown]
@@ -87,22 +86,11 @@ This is a Body
         }
         
         [Test]
-        public void Can_Get_to_retrieve_all_mailboxes()
-        {
-            var restClient = this.CreateRestClient();
-
-            var response = restClient.Get(new Mailboxes());
-
-            Assert.That(response, Is.Not.Null);
-            Assert.That(response.Count, Is.GreaterThan(0));
-        }
-
-        [Test]
         public void Can_Get_to_retrieve_email()
         {
             var restClient = this.CreateRestClient();
 
-            EmailResponse response = restClient.Get(new Email { Mailbox = "default", Id = "2012112622230791-a8" });
+            EmailResponse response = restClient.Get(new Email { Id = "2012112622230791-a8" });
 
             Assert.That(response, Is.Not.Null);
             Assert.That(response.From, Is.Not.Null, "'From' property was null");
@@ -113,101 +101,22 @@ This is a Body
         {
             var restClient = this.CreateRestClient();
 
-            MailboxResponse response = restClient.Get(new Mailbox { Name = "default" });
+            MailboxResponse response = restClient.Get(new MailboxRequest());
 
             Assert.That(response.Emails, Is.Not.Null);
             Assert.That(response.Emails.Count, Is.GreaterThan(0));
             Assert.That(response.Emails[0].Body, Is.Not.Null, "Email body was null");
         }
 
-
         [Test]
-        public void Can_Post_to_create_new_mailbox()
+        public void Can_Delete_to_clear_mailbox()
         {
             var restClient = this.CreateRestClient();
 
-            restClient.Post<MailboxResponse>(new Mailbox(){Name = "test"});
+            restClient.Delete(new MailboxRequest());
 
-            Assert.That(Directory.Exists(Path.Combine(this.MailFolder, "test")));
+            Assert.That(Directory.Exists(this.MailFolder));
+            Assert.That(Directory.GetFiles(this.MailFolder).Length, Is.EqualTo(0));
         }
-
-        [Test]
-        public void Can_Delete_to_delete_mailbox()
-        {
-            var restClient = this.CreateRestClient();
-
-            restClient.Delete(new Mailbox() { Name = "testdelete" });
-
-            Assert.That(!Directory.Exists(Path.Combine(this.MailFolder, "testdelete")));
-        }
-
-
-        /* 
-         * Error Handling Tests
-         */
-        [Test]
-        public void GET_a_mailbox_that_doesnt_exist_throws_a_404_FileNotFoundException()
-        {
-            var restClient = this.CreateRestClient();
-
-            WebServiceException webEx = null;
-
-            try
-            {
-                restClient.Get<MailboxResponse>("mailboxes/UnknownMailbox");
-            }
-            catch (WebServiceException ex)
-            {
-                webEx = ex;
-            }
-
-            Assert.That(webEx.StatusCode, Is.EqualTo(404));
-            //Assert.That(webEx.ResponseStatus.ErrorCode, Is.EqualTo(typeof(FileNotFoundException).Name));
-            //Assert.That(webEx.ResponseStatus.Message, Is.EqualTo("Could not find: UnknownMailbox"));
-        }
-
-        [Test]
-        public void POST_to_an_existing_mailbox_throws_a_409_NotSupportedException()
-        {
-            var restClient = this.CreateRestClient();
-
-            WebServiceException webEx = null;
-
-            try
-            {
-                restClient.Post<MailboxResponse>(new Mailbox { Name = "default" });
-            }
-            catch (WebServiceException ex)
-            {
-                webEx = ex;
-            }
-
-            Assert.That(webEx.StatusCode, Is.EqualTo(409));
-            //Assert.That(webEx.ResponseStatus.ErrorCode, Is.EqualTo(typeof(NotSupportedException).Name));
-            //Assert.That(webEx.ResponseStatus.Message,
-            //    Is.EqualTo("Mailbox already exists: default"));
-        }
-
-        [Test]
-        public void DELETE_a_non_existing_mailbox_throws_404()
-        {
-            var restClient = this.CreateRestClient();
-
-            WebServiceException webEx = null;
-            
-            try
-            {
-                restClient.Delete<MailboxResponse>("mailboxes/non-existing");
-            }
-            catch (WebServiceException ex)
-            {
-                webEx = ex;
-            }
-            
-            Assert.That(webEx.StatusCode, Is.EqualTo(404));
-            //Assert.That(webEx.ResponseStatus.ErrorCode, Is.EqualTo(typeof(FileNotFoundException).Name));
-            //Assert.That(webEx.ResponseStatus.Message, Is.EqualTo("Could not find: non-existing"));
-        }
-
     }
 }
