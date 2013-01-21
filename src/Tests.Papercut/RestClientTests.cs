@@ -74,7 +74,7 @@ This is a Body
         {
             if (Directory.Exists(this.MailFolder))
             {
-                Directory.Delete(this.MailFolder, true);
+          //      Directory.Delete(this.MailFolder, true);
             }
         }
 

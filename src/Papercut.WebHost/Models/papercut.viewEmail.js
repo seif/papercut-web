@@ -1,4 +1,4 @@
-﻿function ViewEmailModel(mailboxName, id) {
+﻿function ViewEmailModel(id) {
     var $this = this;
     $this.template = 'email';
     
@@ -8,14 +8,9 @@
     $this.Subject = ko.observable();
     $this.Body = ko.observable();
     $this.Date = ko.observable();
-
-    $this.chooseMailboxItem = function (mailboxName, id) {
-        var mailboxName = mailboxName.replace(/\//g, '_z_').replace(/ /g, '_');
-        $.routes.find('email').routeTo({ name: mailboxName, id: id });
-    };
-
-    $this.openMailboxItem = function (mailboxName, id) {
-        var url = 'mailboxes/' + encodeURIComponent(mailboxName) + '/' + encodeURIComponent(id);
+    
+    $this.openEmail = function (id) {
+        var url = 'email/' + encodeURIComponent(id);
         $.getJSON(url).success(function (data) {
             $this.Id(data.Id);
             $this.From(data.From);
@@ -28,5 +23,5 @@
         });
     };
 
-    $this.openMailboxItem(mailboxName, id);
+    $this.openEmail(id);
 };

@@ -1,20 +1,8 @@
 ﻿var viewModel = {
-    mailboxes: ko.observableArray(),
     current: ko.observable({ template: 'emails' })
 };
 
 $(function () {
-
-
-    $('.sidebar-nav li').click(function () {
-
-        $(this).siblings().removeClass('active');
-        $(this).addClass('active');
-    });
-
-    $.getJSON("mailboxes").success(function (data) {
-
-        viewModel.mailboxes(data);
 
         var templateEngine = new ko.jqueryTmplTemplateEngine();
         templateEngine.makeTemplateSource = function (template) {
@@ -58,12 +46,8 @@ $(function () {
 
         $.routes.addDataType('stringwithdash', { regexp: /[a-zA-Z_0-9\-]+?/ });
 
-        $.routes.add("/{name:stringwithdash}/{id:stringwithdash}/", 'email', function () {
-            viewModel.current(new ViewEmailModel(this.name, this.id));
-        });
-
-        $.routes.add("/{name:stringwithdash}/", 'mailbox', function () {
-            viewModel.current(new ViewEmailsModel(this.name));
+        $.routes.add("/email/{id:stringwithdash}/", 'email', function () {
+            viewModel.current(new ViewEmailModel(this.id));
         });
 
         $.routes.add("/", 'root', function () {
@@ -72,8 +56,8 @@ $(function () {
 
         $('a.time').prettyDate();
 
-        viewModel.current(new ViewEmailsModel('default'));
+        viewModel.current(new ViewEmailsModel());
 
         ko.applyBindings(viewModel.current());
-    });
+
 });

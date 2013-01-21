@@ -1,38 +1,36 @@
-﻿        <div class="row-fluid">
-            <div class="span3">
-                <div class="well">
-                    <ul class="nav nav-list" id="mailboxes" data-bind="template: { name: 'mailboxitem', foreach: viewModel.mailboxes }">
-                    </ul>
-                </div>
-            </div>
-            <div class="span9">                
-                <div class="row-fluid">
-                    <div class="span4">
-                        <h2>Recieved Emails</h2>
-                    </div>
-                </div>
-                <div class="row-fluid email">
-                    <div data-bind="">
-                        <dl>
-                            <dt class="ib"> Id</dt>
-                            <dd><pre data-bind="text: Id" /></dd>
-        
-                            <dt class="ib"> To</dt>
-                            <dd><pre data-bind="text: To"/></dd>
-        
-                            <dt class="ib"> From</dt>
-                            <dd><pre data-bind="text: From" /></dd>
-        
-                            <dt class="ib"> Subject</dt>
-                            <dd><pre data-bind="text: Subject" /></dd>
-        
-                            <dt class="ib"> Body</dt>
-                            <dd><pre data-bind="html: Body" /></dd>
-        
-                            <dt class="ib"> Date</dt>
-                            <dd><pre data-bind="text: Date" /></dd>
-                        </dl>
-                    </div>
-                </div>
-            </div>
-        </div>
+﻿<div class="row-fluid">
+    <div class="span4">
+        <h2>
+            Recieved Emails</h2>
+    </div>
+</div>
+<div class="row-fluid email">
+    <div data-bind="">
+        <dl>
+            <dt class="ib">Id</dt>
+            <dd>
+                <pre data-bind="text: Id" />
+            </dd>
+            <dt class="ib">To</dt>
+            <dd>
+                <pre data-bind="text: To" />
+            </dd>
+            <dt class="ib">From</dt>
+            <dd>
+                <pre data-bind="text: From" />
+            </dd>
+            <dt class="ib">Subject</dt>
+            <dd>
+                <pre data-bind="text: Subject" />
+            </dd>
+            <dt class="ib">Body</dt>
+            <dd>
+                <pre data-bind="html: Body" />
+            </dd>
+            <dt class="ib">Date</dt>
+            <dd>
+                <pre data-bind="text: Date" />
+            </dd>
+        </dl>
+    </div>
+</div>
