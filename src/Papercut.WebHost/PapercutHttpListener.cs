@@ -32,6 +32,11 @@ namespace Papercut.WebHost
         {
             ServiceStack.Text.JsConfig.DateHandler = ServiceStack.Text.JsonDateHandler.ISO8601;
 
+
+            string[] exts = { "png", "woff", "ttf", "svg" };
+            foreach (string ext in exts)
+                EndpointHostConfig.Instance.AllowFileExtensions.Add(ext);
+
             this.Config = new AppConfig
                 {
                     MailFolder = ConfigurationManager.AppSettings["MailFolder"],
