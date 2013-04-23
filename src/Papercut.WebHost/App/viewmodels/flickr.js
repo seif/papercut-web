@@ -4,6 +4,7 @@
         displayName: 'Flickr',
         images: ko.observableArray([]),
         activate: function () {
+            alert("sd");
             //the router's activator calls this function and waits for it to complete before proceding
             if (this.images().length > 0) {
                 return;
