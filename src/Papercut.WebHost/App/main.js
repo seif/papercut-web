@@ -11,7 +11,7 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/plu
         system.debug(true);
         //>>excludeEnd("build");
 
-        app.title = 'Durandal Starter Kit';
+        app.title = 'Papercut Web viewer';
         app.start().then(function() {
             //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
             //Look for partial views in a 'views' folder in the root.
@@ -19,10 +19,7 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/plu
 
             //configure routing
             router.useConvention();
-            router.mapNav('welcome');
             router.mapNav('mailbox');
-            router.mapNav('flickr');
-
             app.adaptToDevice();
 
             //Show the app by setting the root view model for our application with a transition.
