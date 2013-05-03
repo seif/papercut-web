@@ -1,26 +1,27 @@
 ﻿define(['durandal/http', 'durandal/app'], function (http, app) {
-
+    var router = require('durandal/plugins/router');
+    
     return {
         displayName: "Mailbox",
         emails: ko.observableArray(),
-        links: Array(),
+        links: ko.observableArray(),
         currentPage: ko.observable(),
         totalPages: ko.observable(),
         
-        activate: function() {
-            $this = this;
+        activate: function () {
+            var that = this;
             $.getJSON('emails').success(function (data) {
-                console.debug("Got emails from server");
-                $this.emails(data.Emails);
-                $this.links = data.Links;
-                $this.currentPage(data.Page);
-                $this.totalPages(data.Pages);
+                that.emails(data.Emails);
+                that.links(data.Links);
+                that.currentPage(data.Page);
+                that.totalPages(data.Pages);
             }).error(function (e) {
                 console.log(e);
             });
         },
         
         open: function (email) {
+            router.navigateTo('#/email/' + email.Id, 'skip');
             email.viewUrl = 'views/email';
             app.showModal(email);
         }
