@@ -1,3 +1,5 @@
+using System.Web;
+
 namespace Papercut.WebHost
 {
     using System;
@@ -77,15 +79,16 @@ namespace Papercut.WebHost
         public EmailResponse Get(Email request)
         {
             var mailboxPath = new DirectoryInfo(this.Config.MailFolder);
-            var emailPath = new FileInfo(Path.Combine(mailboxPath.FullName, request.Id + ".eml"));
-            ValidateExists(request.Id, emailPath);
+            string emailFileName = HttpUtility.UrlDecode(request.Id);
+            var emailPath = new FileInfo(Path.Combine(mailboxPath.FullName, emailFileName + ".eml"));
+            ValidateExists(emailFileName, emailPath);
 
 			try {
 				var emailEx = GetMailMessage(emailPath.FullName);
 
 				return new EmailResponse()
 				       {
-				       	Id = request.Id,
+                        Id = emailFileName,
 				       	Body = emailEx.Body,
 				       	From = emailEx.From.Address,
 				       	Subject = emailEx.Subject,
@@ -96,7 +99,7 @@ namespace Papercut.WebHost
 			}catch(Exception e) {
 				return new EmailResponse()
 				       {
-				       	Id = request.Id,
+                        Id = emailFileName,
 				       	Body = "[Email could not be loaded]",
 				       	Subject = "[Error reading email]",
 				       	From = "-",
