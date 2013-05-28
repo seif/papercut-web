@@ -32,6 +32,19 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="pager">
+                    <ul>
+                        <li> 
+                            <a href="#" data-bind="click: function () { getEmails(currentPageNumber() - 1 ); }">&larr; Newer</a>
+                        </li>
+                        <li data-bind="foreach: ko.utils.range(1, totalPages)">
+                            <a href="#" data-bind="text: $data, click: function () { $parent.getEmails($data); }"></a>
+                        </li>
+                        <li> 
+                            <a href="#" data-bind="click: function () { getEmails(currentPageNumber() + 1 ); }">Older &rarr;</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         
