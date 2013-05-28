@@ -14,9 +14,11 @@
         },
 
         open: function (email) {
-            router.navigateTo('#/email/' + email.Id, 'skip');
+            router.navigateTo('#/email/' + encodeURIComponent(email.Id), 'skip');
             email.viewUrl = 'views/email';
-            app.showModal(email);
+            app.showModal(email).then(function () {
+                router.navigateBack();
+            });
         },
 
         getEmails: function (page) {
