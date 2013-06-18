@@ -3,9 +3,9 @@
 
     return {
         displayName: "Mailbox",
-        emails: ko.observableArray(),
-        links: ko.observableArray(),
-        currentPageNumber: ko.observable(),
+        emails: ko.observableArray([]),
+        links: ko.observableArray([]),
+        currentPageNumber: ko.observable(1),
         totalPages: ko.observable(1),
 
         activate: function (args) {
@@ -28,10 +28,13 @@
                 page: page,
                 format: 'json'
             }).then(function (data) {
-                that.emails(data.Emails);
-                that.links = data.Links;
-                that.currentPageNumber(data.Page);
-                that.totalPages(data.Pages);
+                setTimeout(function() {
+                    that.emails(data.Emails);
+                    console.log(that.emails().length);
+                    that.currentPageNumber(data.Page);
+                    that.totalPages(data.Pages);
+                }, 500);
+
             });
         }
     };
