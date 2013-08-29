@@ -139,7 +139,8 @@ namespace Papercut.Smtp.Mime
 			get
 			{
 				string date = this.GetHeader(MailHeaders.Date);
-				return string.IsNullOrEmpty(date) ? DateTime.MinValue : Convert.ToDateTime(date);
+
+			    return Util.TryParseSTMPDateTime(date) ?? DateTime.MinValue;
 			}
 		}
 
