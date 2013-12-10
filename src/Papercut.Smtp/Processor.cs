@@ -1,7 +1,7 @@
 /*  
  * Papercut
  *
- *  Copyright © 2008 - 2012 Ken Robertson
+ *  Copyright Â© 2008 - 2012 Ken Robertson
  *  
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -195,6 +195,11 @@ namespace Papercut.Smtp
 
 						while ((line = reader.ReadLine()) != ".")
 						{
+							// reverse any dot-stuffing per RFC 2821, section 4.5.2
+							if (line.StartsWith(".") && line.Length > 1)
+							{
+								line = line.Substring(1);
+							}
 							writer.WriteLine(line);
 						}
 
