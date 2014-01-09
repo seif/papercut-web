@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MessageFileService.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MessageEntry.cs" />

@@ -1,7 +1,7 @@
 /*  
  * Papercut
  *
- *  Copyright © 2008 - 2012 Ken Robertson
+ *  Copyright Â© 2008 - 2012 Ken Robertson
  *  
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ namespace Papercut.Smtp
 	/// <summary>
 	/// Summary description for Logger.
 	/// </summary>
-	public class Logger
+	public static class Logger
 	{
 		#region Constants and Fields
 
