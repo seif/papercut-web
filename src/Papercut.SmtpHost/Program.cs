@@ -21,8 +21,8 @@
                         var address = IPAddress.Parse(ConfigurationManager.AppSettings["IP"]);
                         var port = int.Parse(ConfigurationManager.AppSettings["Port"]);
                         var mailFolder = ConfigurationManager.AppSettings["MailFolder"];
-
-                        return new Server(address, port, new Processor(mailFolder));
+                        MessageFileService fileService = new MessageFileService(mailFolder);
+                        return new Server(address, port, new Processor(fileService));
                     });
                 c.WhenStarted(s => s.Start());
                 c.WhenStopped(s => s.Stop());

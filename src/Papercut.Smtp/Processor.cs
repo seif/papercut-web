@@ -36,14 +36,14 @@ namespace Papercut.Smtp
     /// </summary>
     public class Processor
     {
-	    private string mailFolder;
+        private readonly MessageFileService _messageFileService;
 
-	    public Processor(string mailFolder)
+        public Processor(MessageFileService messageFileService)
 	    {
-	        this.mailFolder = mailFolder;
+	        _messageFileService = messageFileService;
 	    }
 
-		#region Events
+        #region Events
 
         /// <summary>
         ///   The message received.
@@ -199,7 +199,7 @@ namespace Papercut.Smtp
                     reader.Close();
                 }
 
-                file = MessageFileService.SaveMessage(output);
+                file = _messageFileService.SaveMessage(output);
             }
             catch (IOException e)
             {

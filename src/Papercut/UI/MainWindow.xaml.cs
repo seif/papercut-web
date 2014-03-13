@@ -76,6 +76,7 @@ namespace Papercut.UI
         private readonly Server server;
 
         private CancellationTokenSource _currentMessageCancellationTokenSource = null;
+        private MessageFileService messageFileService;
 
         #endregion
 
@@ -89,7 +90,7 @@ namespace Papercut.UI
         public MainWindow()
         {
             this.InitializeComponent();
-
+            this.messageFileService = new MessageFileService();
             // Set up the notification icon
             this.notification = new NotifyIcon
                                 {
@@ -152,7 +153,8 @@ namespace Papercut.UI
             var port = Settings.Default.Port;
 
             // Start listening for connections
-            this.server = new Server(address, port, new Processor(AppDomain.CurrentDomain.BaseDirectory));
+            
+            this.server = new Server(address, port, new Processor(messageFileService));
             try
             {
                 this.server.Start();
@@ -317,7 +319,7 @@ namespace Papercut.UI
         /// </summary>
         private void LoadMessages()
         {
-            foreach (var entry in MessageFileService.LoadMessages())
+            foreach (var entry in this.messageFileService.LoadMessages())
             {
                 this.messagesList.Items.Add(entry);
             }

@@ -24,7 +24,7 @@ namespace Papercut.Smtp
     using System.IO;
     using System.Linq;
 
-    public static class MessageFileService
+    public class MessageFileService
     {
         #region Constants
 
@@ -34,29 +34,32 @@ namespace Papercut.Smtp
 
         #region Static Fields
 
-        public static readonly string BasePath;
+        public readonly string BasePath;
 
         #endregion
 
         #region Constructors and Destructors
 
-        static MessageFileService()
+        public MessageFileService()
+            : this(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Papercut"))
         {
-            var papercutDocuments = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Papercut");
+        }
 
+        public MessageFileService(string mailfolder)
+        {
             try
             {
-                if (!Directory.Exists(papercutDocuments))
+                if (!Directory.Exists(mailfolder))
                 {
-                    Directory.CreateDirectory(papercutDocuments);
+                    Directory.CreateDirectory(mailfolder);
                 }
             }
             catch (Exception ex)
             {
-                Logger.WriteError(string.Format("Failure accessing or creating directory: {0}", papercutDocuments), ex);
+                Logger.WriteError(string.Format("Failure accessing or creating directory: {0}", mailfolder), ex);
             }
 
-            BasePath = papercutDocuments;
+            BasePath = mailfolder;
 
             // attempt migration for previous versions...
             TryMigrateMessages();
@@ -66,13 +69,13 @@ namespace Papercut.Smtp
 
         #region Public Methods and Operators
 
-        public static IEnumerable<MessageEntry> LoadMessages()
+        public IEnumerable<MessageEntry> LoadMessages()
         {
             string[] files = Directory.GetFiles(BasePath, MessageFileSearchPattern);
             return files.Select(file => new MessageEntry(file));
         }
 
-        public static string SaveMessage(IList<string> output)
+        public string SaveMessage(IList<string> output)
         {
             string file = null;
 
@@ -104,7 +107,7 @@ namespace Papercut.Smtp
 
         #region Methods
 
-        private static void TryMigrateMessages()
+        private void TryMigrateMessages()
         {
             try
             {
