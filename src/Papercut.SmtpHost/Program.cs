@@ -14,7 +14,7 @@
         {
             HostFactory.Run(x => x.Service<Server>(c => 
             {
-                x.UseLog4Net("log4net.config");
+                x.UseLog4Net("PaperCut.SmtpHost.exe.config");
 
                 c.ConstructUsing(s =>
                     {

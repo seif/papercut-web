@@ -217,10 +217,6 @@
     <Content Include="Content\font\FontAwesome.otf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="log4net.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
     <None Include="readme.md" />
     <Content Include="Scripts\BindingHandlers\DateBindingHandler.js">

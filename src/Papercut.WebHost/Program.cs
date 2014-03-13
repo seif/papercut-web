@@ -31,7 +31,7 @@ namespace Papercut.WebHost
         {
             HostFactory.Run(x => x.Service<PapercutHttpListener>(c =>
             {
-                x.UseLog4Net("log4net.config");
+                x.UseLog4Net("PaperCut.WebHost.exe.config");
 
                 c.ConstructUsing(s =>
                     {
