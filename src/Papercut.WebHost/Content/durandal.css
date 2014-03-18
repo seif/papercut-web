@@ -18,13 +18,11 @@
 }
 
 .modalHost {
-    top: 50%;
+    top: 10px;
     left: 50%;
     position: fixed;
     opacity: 0;
-    
     -webkit-backface-visibility: hidden;
-
     -webkit-transition: opacity 0.1s linear; 
 	-moz-transition: opacity 0.1s linear; 
 	-o-transition: opacity 0.1s linear;
@@ -46,4 +44,12 @@
     -moz-background-clip: padding-box;
     background-clip: padding-box;
     min-width: 300px;
+    max-width: 900px;
+    overflow-y: hidden;
+    margin: 20px;
+    padding: 10px;
+}
+
+.modalHost .messageBox {
+    overflow-y: auto; 
 }

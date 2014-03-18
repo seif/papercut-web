@@ -113,11 +113,8 @@
                 modal.oldBodyMarginRight = $("body").css("margin-right");
                 
                 var html = $("html");
-                var oldBodyOuterWidth = body.outerWidth(true);
                 var oldScrollTop = html.scrollTop();
-                $("html").css("overflow-y", "hidden");
                 var newBodyOuterWidth = $("body").outerWidth(true);
-                body.css("margin-right", (newBodyOuterWidth - oldBodyOuterWidth + parseInt(modal.oldBodyMarginRight)) + "px");
                 html.scrollTop(oldScrollTop); // necessary for Firefox
                 $("#simplemodal-overlay").css("width", newBodyOuterWidth + "px");
             }
@@ -139,15 +136,15 @@
             }
         },
         afterCompose: function(parent, newChild, settings) {
-            var $child = $(newChild);
-            var width = $child.width();
-            var height = $child.height();
+           var $child = $(newChild);
+           var width = $child.width();
+           var height = $(window).height();
 
             $child.css({
-                'margin-top': (-height / 2).toString() + 'px',
-                'margin-left': (-width / 2).toString() + 'px'
+                'max-height': (height - 100).toString() + 'px',
+                'margin-left': (-width / 2).toString() + 'px',
             });
-
+            
             $(settings.model.modal.host).css('opacity', 1);
 
             if ($(newChild).hasClass('autoclose')) {
