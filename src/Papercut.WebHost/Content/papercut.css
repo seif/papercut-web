@@ -50,3 +50,7 @@
         margin-bottom: 0;
     }
 }
+
+.messageBox dl {margin: 10px; }
+.messageBox dt {float: left; }
+.messageBox pre{padding:5px; border:0;margin-left:60px}	
