@@ -1,0 +1,7 @@
+﻿#options skipremin 
+
+bootstrap.min.css
+bootstrap-responsive.min.css
+font-awesome.min.css
+durandal.css
+app.css

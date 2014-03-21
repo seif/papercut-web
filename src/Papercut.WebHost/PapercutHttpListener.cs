@@ -37,6 +37,8 @@ namespace Papercut.WebHost
             foreach (string ext in exts)
                 EndpointHostConfig.Instance.AllowFileExtensions.Add(ext);
 
+            Plugins.Add(new ServiceStack.Razor.RazorFormat());
+
             this.PapercutConfig = new AppConfig
                 {
                     MailFolder = ConfigurationManager.AppSettings["MailFolder"],
