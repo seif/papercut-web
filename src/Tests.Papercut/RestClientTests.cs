@@ -57,7 +57,7 @@ This is a Body
         [SetUp]
         public void OnBeforeEachTest()
         {
-            this.MailFolder = this.appHost.Config.MailFolder;
+            this.MailFolder = this.appHost.PapercutConfig.MailFolder;
             if (Directory.Exists(this.MailFolder))
             {
                 Directory.Delete(this.MailFolder, true);

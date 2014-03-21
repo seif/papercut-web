@@ -145,7 +145,7 @@ namespace Papercut.Smtp.Mime
 			{
 				return new ContentType(contentType);
 			}
-			catch (FormatException f)
+			catch (FormatException)
 			{
 				return new ContentType(contentType.Replace("\"", string.Empty).Replace(" = ", "="));
 			}

@@ -18,7 +18,7 @@ namespace Papercut.WebHost
         public PapercutHttpListener()
             : base("HttpListener Host for Papercut", typeof(MailboxService).Assembly) { }
 
-        public AppConfig Config { get; set; }
+        public AppConfig PapercutConfig { get; set; }
 
         public string ListeningOn
         {
@@ -37,13 +37,13 @@ namespace Papercut.WebHost
             foreach (string ext in exts)
                 EndpointHostConfig.Instance.AllowFileExtensions.Add(ext);
 
-            this.Config = new AppConfig
+            this.PapercutConfig = new AppConfig
                 {
                     MailFolder = ConfigurationManager.AppSettings["MailFolder"],
                     EmailsPerPage = Convert.ToInt32(ConfigurationManager.AppSettings["EmailsPerPage"])
                 };
 
-            container.Register(this.Config);
+            container.Register(this.PapercutConfig);
         }
 
         public override void Start(string urlBase)

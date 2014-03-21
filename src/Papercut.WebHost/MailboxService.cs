@@ -96,7 +96,7 @@ namespace Papercut.WebHost
 				       	To = emailEx.To.Select(t => t.Address).ToList(),
 				       	Links = new List<Link>(new[] {this.GetEmailLink(emailPath.FullName)})
 				       };
-			}catch(Exception e) {
+			}catch {
 				return new EmailResponse()
 				       {
                         Id = emailFileName,
