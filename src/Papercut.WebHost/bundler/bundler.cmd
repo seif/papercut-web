@@ -3,7 +3,7 @@ pushd "%~dp0"
 
 :: process Content and Scripts by default
 if "%*" == "" (
-    node bundler.js ../Content ../Scripts ../App
+    node bundler.js ../Content ../Scripts
 ) else (
     node bundler.js %*
 )

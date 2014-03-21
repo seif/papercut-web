@@ -14,11 +14,7 @@
     <link rel="apple-touch-startup-image" href="~/Content/images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
     <link rel="apple-touch-icon" href="~/Content/images/icon.png"/>
             
-    <link rel="stylesheet" type="text/css" href="/Content/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="/Content/bootstrap-responsive.min.css"/>
-    <link rel="stylesheet" type="text/css" href="/Content/font-awesome.min.css"/>
-    <link rel="stylesheet" type="text/css" href="/Content/durandal.css"/>
-    <link rel="stylesheet" type="text/css" href="/Content/app.css"/>
+    @Html.RenderCssBundle("~/Content/app.css.bundle", BundleOptions.MinifiedAndCombined)
 
     <script type="text/javascript">
         if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
@@ -31,12 +27,7 @@
 </head>
 <body>
     <div id="applicationHost"></div>
-    <script type="text/javascript" src="/Scripts/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="/Scripts/knockout-2.2.1.js"></script>
-    <script type="text/javascript" src="/Scripts/sammy-0.7.4.js"></script>
-    <script type="text/javascript" src="/Scripts/bootstrap.js"></script>
-    <script type="text/javascript" src="/Scripts/moment-2.0.0.js" ></script>
-    <script type="text/javascript" src="/Scripts/BindingHandlers/DateBindingHandler.js"></script>
+    @Html.RenderJsBundle("~/Scripts/vendor.js.bundle", BundleOptions.MinifiedAndCombined)
     <script type="text/javascript" src="/App/durandal/amd/require.js" data-main="/App/main"></script>
 </body>
 </html>
