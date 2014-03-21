@@ -1,8 +1,0 @@
-﻿#options skipremin 
-
-jquery-1.9.1.js
-knockout-2.2.1.js
-sammy-0.7.4.js
-bootstrap.js
-moment-2.0.0.js
-BindingHandlers/DateBindingHandler.js

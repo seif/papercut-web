@@ -1,5 +1,6 @@
-﻿define(['durandal/http', 'durandal/app'], function (http, app) {
-
+﻿define(['plugins/http', 'durandal/app'], function (http, app) {
+    var ko = require('knockout');
+    
 	return {
 		displayName: 'Email',
 
@@ -9,9 +10,9 @@
 		Subject: ko.observable(),
 		Body: ko.observable(),
 		Date: ko.observable(),
-		activate: function (params) {
+		activate: function (id) {
 			var self = this;
-			var url = 'email/' + encodeURIComponent(params.id);
+			var url = 'email/' + encodeURIComponent(id);
 
 			//Return a promise so durandal gets all the data from the async response. Ref: http://stackoverflow.com/questions/15083516/how-to-use-observables-in-durandal
 			var promise = $.getJSON(url).success(function (data) {

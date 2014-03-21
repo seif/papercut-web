@@ -1,6 +1,7 @@
-﻿define(['durandal/http', 'durandal/app'], function (http, app) {
-	var router = require('durandal/plugins/router');
-
+﻿define(['plugins/http', 'durandal/app'], function (http, app) {
+	var router = require('plugins/router');
+	var ko = require('knockout');
+    
 	return {
 		displayName: "Mailbox",
 		emails: ko.observableArray([]),
@@ -8,31 +9,29 @@
 		currentPageNumber: ko.observable(1),
 		totalPages: ko.observable(1),
 
-		activate: function (args) {
-			var page = args.splat ? args.splat[0] : 1;
-
-
-			return this.getEmails(page);
+		activate: function (requestPage) {
+		    var page = requestPage || 1;
+		    return this.getEmails(page);
 		},
 
 		open: function (email) {
-			router.navigateTo('#/email/' + encodeURIComponent(email.Id), 'skip');
+			router.navigate('email/' + encodeURIComponent(email.Id), false);
 			email.viewUrl = 'views/email';
-			app.showModal(email).then(function () {
-				router.navigateBack();
+			app.showDialog(email).then(function() {
+			    router.navigateBack();
 			});
 		},
 
 		getEmails: function (page) {
 			var that = this;
-			router.navigateTo('#/mailbox/page/' + page, 'skip');
+            
+			router.navigate('mailbox/' + page, false);
 
-			var url = 'emails/?format=json&page=' + page
+		    var url = 'emails/?format=json&page=' + page;
 
 			//Return a promise so durandal gets all the data from the async response. Ref: http://stackoverflow.com/questions/15083516/how-to-use-observables-in-durandal
 			var promise = $.getJSON(url).success(function (data) {
 				that.emails(data.Emails);
-				console.log(that.emails().length);
 				that.currentPageNumber(data.Page);
 				that.totalPages(data.Pages);
 			});

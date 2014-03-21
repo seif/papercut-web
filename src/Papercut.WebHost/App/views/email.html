@@ -1,28 +1,33 @@
 ﻿<div class="messageBox autoclose">
+    <div class="modal-header">
+        <h3 data-bind="text: Subject"></h3>
+    </div>
+    <div>
         <dl>
-            <dt class="ib">Id</dt>
-            <dd>
-                <pre data-bind="text: Id" />
-            </dd>
-            <dt class="ib">Date</dt>
-            <dd>
-                <pre data-bind="text: Date" />
-            </dd>
-            <dt class="ib">To</dt>
-            <dd>
-                <pre data-bind="text: To" />
-            </dd>
-            <dt class="ib">From</dt>
-            <dd>
-                <pre data-bind="text: From" />
-            </dd>
-            <dt class="ib">Subject</dt>
-            <dd>
-                <pre data-bind="text: Subject" />
-            </dd>
-            <dt class="ib">Body</dt>
-            <dd>
-                <pre data-bind="html: Body" />
-            </dd>
+                <dt>Id</dt>
+                <dd>
+                    <pre data-bind="text: Id" />
+                </dd>
+                <dt>To</dt>
+                <dd>
+                    <pre data-bind="text: To" />
+                </dd>
+                <dt>From</dt>
+                <dd>
+                    <pre data-bind="text: From" />
+                </dd>
+                <dt>Subject</dt>
+                <dd>
+                    <pre data-bind="text: Subject" />
+                </dd>
+                <dt>Body</dt>
+                <dd>
+                    <pre data-bind="html: Body" />
+                </dd>
+                <dt>Date</dt>
+                <dd>
+                    <pre data-bind="text: Date" />
+                </dd>
         </dl>
+    </div>
 </div>

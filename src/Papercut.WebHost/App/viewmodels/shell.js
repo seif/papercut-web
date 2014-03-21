@@ -1,17 +1,15 @@
-﻿define(['durandal/plugins/router', 'durandal/app'], function (router, app) {
+﻿define(['plugins/router', 'durandal/app'], function (router, app) {
 
     return {
         router: router,
         activate: function () {
-            router.mapAuto();
-            router.mapRoute("email/:id");
-            router.mapRoute({
-                url: /#\/mailbox\/page\/(.+)/,
-                moduleId: "viewmodels/mailbox",
-                name: "Mailbox",
-                hash: "#/mailbox/page/"
-            });
-            return router.activate('mailbox');
+            router.map([
+                { route: '', title: 'Mailbox', moduleId: 'viewmodels/mailbox', nav: true },
+                { route: 'email/:id', moduleId: 'viewmodels/email' },
+                { route: 'mailbox/:page', title: 'Mailbox', moduleId: 'viewmodels/mailbox', hash: '#mailbox/page/' }
+            ]).buildNavigationModel();
+
+            return router.activate();
         }
     };
 });

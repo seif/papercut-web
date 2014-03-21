@@ -27,7 +27,8 @@
 </head>
 <body>
     <div id="applicationHost"></div>
-    @Html.RenderJsBundle("~/Scripts/vendor.js.bundle", BundleOptions.MinifiedAndCombined)
-    <script type="text/javascript" src="/App/durandal/amd/require.js" data-main="/App/main"></script>
+@*    @Html.RenderJsBundle("~/Scripts/vendor.js.bundle", BundleOptions.MinifiedAndCombined)
+    <script type="text/javascript" src="/Scripts/require.js" data-main="/App/main"></script>*@
+    <script type="text/javascript" src="/App/main-built.js" data-main="/App/main"></script>
 </body>
 </html>

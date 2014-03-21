@@ -1,13 +1,13 @@
 ﻿<div>
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
-            <a class="brand" data-bind="attr: { href: router.visibleRoutes()[0].hash }">
+            <a class="brand" data-bind="attr: { href: router.navigationModel()[0].hash }">
                 <i class=" icon-envelope"></i>
                 <span>Papercut Web viewer</span>
             </a>
-            <ul class="nav" data-bind="foreach: router.visibleRoutes">
+            <ul class="nav" data-bind="foreach: router.navigationModel">
                 <li data-bind="css: { active: isActive }">
-                    <a data-bind="attr: { href: hash }, html: name"></a>
+                    <a data-bind="attr: { href: hash }, html: title"></a>
                 </li>
             </ul>
             
@@ -25,7 +25,7 @@
         </div>
     </div>
     
-    <div class="container-fluid page-host">
+    <div class="container-fluid page-host" data-bind="router: { transition: 'entrance', cacheViews: true }">
         <!--ko compose: { 
             model: router.activeItem, //wiring the router
             afterCompose: router.afterCompose, //wiring the router
