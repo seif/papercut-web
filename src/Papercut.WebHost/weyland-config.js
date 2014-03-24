@@ -1,11 +1,5 @@
 ﻿exports.config = function (weyland) {
     weyland.build('main')
-        .task.jshint({
-            include: 'App/**/*.js'
-        })
-        .task.uglifyjs({
-            include: ['App/**/*.js', 'Scripts/durandal/**/*.js']
-        })
         .task.rjs({
             include: ['App/**/*.{js,html}', 'Scripts/durandal/**/*.js'],
             loaderPluginExtensionMaps: {
@@ -28,7 +22,7 @@
                     'momentDateBinding' : '../Scripts/BindingHandlers/DateBindingHandler'
                 },
                 inlineText: true,
-                optimize: 'none',
+                optimize: 'uglify2',
                 pragmas: {
                     build: true
                 },
