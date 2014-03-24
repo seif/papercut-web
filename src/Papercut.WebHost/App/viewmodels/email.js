@@ -1,4 +1,4 @@
-﻿define(['plugins/http', 'durandal/app'], function (http, app) {
+﻿define(['plugins/http', 'durandal/app', 'momentDateBinding'], function (http, app) {
     var ko = require('knockout');
     
 	return {

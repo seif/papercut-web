@@ -1,7 +1,10 @@
-﻿ko.bindingHandlers.date = {
-    update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-        var value = valueAccessor();
-        var date = moment(value, "YYYY-MM-DDTHH:mm:ss Z").fromNow();
-        $(element).text(date);
-    }
-};
+﻿define(['knockout', 'moment'], function (ko) {
+    ko.bindingHandlers.date = {
+        init: ko.bindingHandlers.text.init,
+        update: function(element, valueAccessor) {
+            var value = valueAccessor();
+            var date = moment(value, "YYYY-MM-DDTHH:mm:ss Z").fromNow();
+            $(element).text(date);
+        }
+    };
+});

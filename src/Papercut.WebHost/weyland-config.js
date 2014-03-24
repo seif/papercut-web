@@ -24,7 +24,8 @@
                     'knockout': '../Scripts/knockout-2.3.0',
                     'bootstrap': '../Scripts/bootstrap',
                     'jquery': '../Scripts/jquery-1.9.1',
-                    'moment': '../Scripts/moment-2.0.0'
+                    'moment': '../Scripts/moment-2.0.0',
+                    'momentDateBinding' : '../Scripts/BindingHandlers/DateBindingHandler'
                 },
                 inlineText: true,
                 optimize: 'none',
