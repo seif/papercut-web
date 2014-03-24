@@ -41,7 +41,7 @@
                             <a href="#" data-bind="text: $data, click: function () { $parent.getEmails($data); }"></a>
                         </li>
                         <li> 
-                            <a href="#" data-bind="visible:currentPageNumber() != totalPages(),click: function () { getEmails(currentPageNumber() + 1 ); }">Older &rarr;</a>
+                            <a href="#" data-bind="visible:currentPageNumber() < totalPages(),click: function () { getEmails(currentPageNumber() + 1 ); }">Older &rarr;</a>
                         </li>
                     </ul>
                 </div>
