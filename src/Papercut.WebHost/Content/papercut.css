@@ -60,3 +60,10 @@
 .messageBox dl {margin: 10px; }
 .messageBox dt {float: left; }
 .messageBox pre{padding:5px; border:0;margin-left:60px}	
+
+.modalHost .email {
+  position: relative;
+  max-height: 400px;
+  padding: 15px;
+  overflow-y: auto;
+}
